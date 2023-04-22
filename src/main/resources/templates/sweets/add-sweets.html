@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add sweets</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+<div class="wrapper">
+    <div th:replace="fragments/header :: header"></div>
+    <div class="main">
+        <div class="block">
+            <h2 class="catalog-name">Add sweets</h2>
+            <form th:action="@{/api/sweets/add_sweets}" method="post">
+                <label for="price" class="input">Price:
+                    <input class="input form-control" id="price" placeholder="Enter price" type="text" name="price">
+                </label>
+                <label for="type" class="input">Type:
+                    <input class="input form-control" id="type" placeholder="Enter type" type="text" name="type">
+                </label>
+                <label for="weight" class="input">Weight:
+                    <input class="input form-control" id="weight" placeholder="Enter weight" type="text" name="weight">
+                </label>
+                <label for="composition" class="input">Composition:
+                    <input class="input form-control" id="composition" placeholder="Enter composition" type="text" name="composition">
+                </label>
+                <label for="brand" class="input">Brand:
+                    <select class="form-control input" id="brand" name="brandId">
+                        <option th:each="brand : ${brands}"
+                                th:value="${brand.id}"
+                                th:text="${brand.name}">Brand</option>
+                    </select>
+                </label>
+                <label for="store" class="input">Store:
+                    <select class="form-control input" id="store" name="storeId">
+                        <option th:each="store : ${stores}"
+                                th:value="${store.id}"
+                                th:text="${store.addressName}">Store</option>
+                    </select>
+                </label>
+                <label for="supplier" class="input">Supplier:
+                    <select class="form-control input" id="supplier" name="supplierId">
+                        <option th:each="supplier : ${suppliers}"
+                                th:value="${supplier.id}"
+                                th:text="${supplier.name}">Supplier</option>
+                    </select>
+                </label>
+                <button type="submit" class="btn btn-default">ADD SWEETS</button>
+                <a class="btn btn-default" th:href="@{/api/sweets}">CANCEL</a>
+            </form>
+        </div>
+        <div th:replace="fragments/footer :: footer"></div>
+    </div>
+</div>
+</body>
+</html>

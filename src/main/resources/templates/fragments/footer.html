@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Footer fragment</title>
+</head>
+<body>
+<footer class="footerNP" th:fragment="footer">
+    <div class="wrap wrap__footer">
+        <div class="footer__top">
+            <div class="footer__nav">
+                <ul>
+                    <li class="footer__nav-item">
+                        <a class="footer__nav-link" href="/">Home</a>
+                    </li>
+                    <li class="footer__nav-item">
+                        <a class="footer__nav-link" href="/api/brands">Brands</a>
+                    </li>
+                    <li class="footer__nav-item">
+                        <a class="footer__nav-link" href="/sale">Sale</a>
+                    </li>
+                    <li class="footer__nav-item">
+                        <a class="footer__nav-link" href="/all-cats">Product catalog</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="footer__nav-item">
+                        <a class="footer__nav-link" href="/news">News</a>
+                    </li>
+                    <li class="footer__nav-item">
+                        <a class="footer__nav-link" href="/shipping">Shipping and payment</a>
+                    </li>
+                    <li class="footer__nav-item">
+                        <a class="footer__nav-link" href="/api/phone_numbers">Contacts</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="footer__top-right">
+
+                <div class="footer__time">
+                    <div class="footer__day-work">
+                        <p>Opening hours: <span>09.00 - 21.00</span></p>
+                        <div class="footer__day-items">
+                            <div class="footer__day-item"></div>
+                            <div class="footer__day-item"></div>
+                            <div class="footer__day-item"></div>
+                            <div class="footer__day-item"></div>
+                            <div class="footer__day-item"></div>
+                            <div class="footer__day-item"></div>
+                            <div class="footer__day-item"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <ul class="footer__cards">
+                <li class="footer__card footer__card-visa"></li>
+                <li class="footer__card footer__card-master"></li>
+            </ul>
+        </div>
+    </div>
+</footer>
+</body>
+</html>

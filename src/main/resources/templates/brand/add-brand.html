@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Add brand</title>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+<div class="wrapper">
+  <div th:replace="fragments/header :: header"></div>
+  <div class="main">
+    <div class="block">
+      <h2 class="catalog-name">Add brand</h2>
+      <form th:action="@{/api/brands/add_brand}" method="post">
+        <label for="name" class="input">Name:
+          <input class="input form-control" id="name" placeholder="Enter name" type="text" name="name">
+        </label>
+        <button type="submit" class="btn btn-default">ADD BRAND</button>
+        <a class="btn btn-default" th:href="@{/api/brands}">CANCEL</a>
+      </form>
+    </div>
+    <div th:replace="fragments/footer :: footer"></div>
+  </div>
+</div>
+</body>
+</html>
