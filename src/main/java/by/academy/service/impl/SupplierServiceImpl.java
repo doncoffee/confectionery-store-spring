@@ -5,6 +5,8 @@ import by.academy.repository.SupplierRepository;
 import by.academy.service.SupplierService;
 import by.academy.service.dto.SupplierDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +28,13 @@ public class SupplierServiceImpl implements SupplierService {
                 .map(supplierRepository::save)
                 .map(supplierMapper::mapToDTO)
                 .orElseThrow();
+    }
+
+    @Override
+    public Page<SupplierDTO> findAllSuppliers(Pageable pageable) {
+        return supplierRepository.findAll(pageable)
+                .map(supplierMapper::mapToDTO);
+
     }
 
     @Override

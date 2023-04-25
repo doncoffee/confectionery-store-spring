@@ -5,6 +5,8 @@ import by.academy.repository.StoreRepository;
 import by.academy.service.StoreService;
 import by.academy.service.dto.StoreDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +28,12 @@ public class StoreServiceImpl implements StoreService {
                 .map(storeRepository::save)
                 .map(storeMapper::mapToDTO)
                 .orElseThrow();
+    }
+
+    @Override
+    public Page<StoreDTO> findAllStores(Pageable pageable) {
+        return storeRepository.findAll(pageable)
+                .map(storeMapper::mapToDTO);
     }
 
     @Override

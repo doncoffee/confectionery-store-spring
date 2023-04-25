@@ -5,6 +5,8 @@ import by.academy.repository.SweetsRepository;
 import by.academy.service.SweetsService;
 import by.academy.service.dto.SweetsDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +28,12 @@ public class SweetsServiceImpl implements SweetsService {
                 .map(sweetsRepository::save)
                 .map(sweetsMapper::mapToDTO)
                 .orElseThrow();
+    }
+
+    @Override
+    public Page<SweetsDTO> findAllSweets(Pageable pageable) {
+        return sweetsRepository.findAll(pageable)
+                .map(sweetsMapper::mapToDTO);
     }
 
     @Override

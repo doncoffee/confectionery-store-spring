@@ -14,6 +14,8 @@
         <div class="block">
             <h2 class="catalog-name">Edit chocolate</h2>
             <form th:action="@{/api/chocolates/{id}/update(id=${chocolate.id})}" method="post">
+                <input type="hidden" name="page" th:value="${page}">
+                <input type="hidden" name="size" th:value="${size}">
                 <label for="price" class="input">Price:
                     <input class="input form-control" id="price" placeholder="Enter price" type="text" name="price"
                            th:value="${chocolate.price}">
@@ -55,7 +57,7 @@
                     </select>
                 </label>
                 <button type="submit" class="btn btn-default">EDIT CHOCOLATE</button>
-                <a class="btn btn-default" th:href="@{/api/chocolates}">CANCEL</a>
+                <a class="btn btn-default" href="javascript:history.back()">CANCEL</a>
             </form>
         </div>
         <div th:replace="fragments/footer :: footer"></div>

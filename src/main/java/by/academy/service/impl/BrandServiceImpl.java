@@ -5,6 +5,8 @@ import by.academy.repository.BrandRepository;
 import by.academy.service.BrandService;
 import by.academy.service.dto.BrandDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +28,12 @@ public class BrandServiceImpl implements BrandService {
                 .map(brandRepository::save)
                 .map(brandMapper::mapToDTO)
                 .orElseThrow();
+    }
+
+    @Override
+    public Page<BrandDTO> findAllBrands(Pageable pageable) {
+        return brandRepository.findAll(pageable)
+                .map(brandMapper::mapToDTO);
     }
 
     @Override

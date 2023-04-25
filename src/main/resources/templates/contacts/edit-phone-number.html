@@ -15,11 +15,13 @@
             <h2 class="catalog-name">Edit contact</h2>
             <form th:action="@{/api/phone_numbers/{id}/update(id=${phoneNumber.id})}" method="post">
                 <label for="name" class="input">Number:
+                    <input type="hidden" name="page" th:value="${page}">
+                    <input type="hidden" name="size" th:value="${size}">
                     <input class="input form-control" id="name" placeholder="Enter number" type="text" name="number"
                            th:value="${phoneNumber.number}">
                 </label>
                 <button type="submit" class="btn btn-default">UPDATE CONTACT</button>
-                <a class="btn btn-default" th:href="@{/api/phone_numbers}">CANCEL</a>
+                <a class="btn btn-default" href="javascript:history.back()">CANCEL</a>
             </form>
         </div>
         <div th:replace="fragments/footer :: footer"></div>

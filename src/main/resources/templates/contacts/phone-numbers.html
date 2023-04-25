@@ -24,15 +24,20 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="phoneNumber : ${phoneNumbers}">
-                    <td th:text="${phoneNumberStat.count}"></td>
+                <tr th:each="phoneNumber, phoneNumberStat : ${phoneNumbers.content}">
+                    <td th:text="${phoneNumberStat.index + phoneNumbers.pageable.offset + 1}"></td>
                     <td th:text="${phoneNumber.number}"></td>
                     <td>
-                        <a class="btn btn-default"
-                           th:href="@{/api/phone_numbers/edit_phone_number/{id}(id=${phoneNumber.id})}">EDIT</a>
+                        <form th:action="@{/api/phone_numbers/edit_phone_number/{id}(id=${phoneNumber.id})}" method="get">
+                            <input type="hidden" name="page" th:value="${page}">
+                            <input type="hidden" name="size" th:value="${size}">
+                            <button class="button btn btn-default" type="submit">EDIT</button>
+                        </form>
                     </td>
                     <td>
                         <form th:action="@{/api/phone_numbers/{id}/delete(id=${phoneNumber.id})}" method="post">
+                            <input type="hidden" name="page" th:value="${phoneNumbers.number}">
+                            <input type="hidden" name="size" th:value="${phoneNumbers.size}">
                             <button class="button btn btn-default" type="submit">DELETE</button>
                         </form>
                     </td>
@@ -40,13 +45,50 @@
                 </tbody>
             </table>
             <div>
-                <a class="btn btn-default" th:href="@{/api/phone_numbers/add_phone_number}">Add contact</a>
+                <form class="form" method="get" action="/api/phone_numbers">
+                    <ul class="pagination" th:if="${phoneNumbers.totalPages > 1}">
+                        <li class="page-item" th:classappend="${phoneNumbers.first ? 'disabled' : ''}">
+                            <a class="page-link"
+                               th:href="@{${'/api/phone_numbers?page=' + (phoneNumbers.number - 1) + '&size=' + phoneNumbers.size}}">&laquo;</a>
+                        </li>
+                        <li th:each="page : ${#numbers.sequence(0, phoneNumbers.totalPages - 1)}"
+                            th:classappend="${page == phoneNumbers.number ? 'active' : ''}"
+                            class="page-item">
+                            <a class="page-link"
+                               th:href="@{${'/api/phone_numbers?page=' + page + '&size=' + phoneNumbers.size}}"
+                               th:text="${page + 1}"></a>
+                        </li>
+                        <li class="page-item" th:classappend="${phoneNumbers.last ? 'disabled' : ''}">
+                            <a class="page-link"
+                               th:href="@{${'/api/phone_numbers?page=' + (phoneNumbers.number + 1) + '&size=' + phoneNumbers.size}}">&raquo;</a>
+                        </li>
+                    </ul>
+                    <input type="hidden" name="page" th:value="${phoneNumbers.number}">
+                    <div class="form-group">
+                        <select class="form select" id="size" name="size" onchange="this.form.submit()">
+                            <option value="3" th:selected="${phoneNumbers.size == 3}">3</option>
+                            <option value="5" th:selected="${phoneNumbers.size == 5}">5</option>
+                            <option value="10" th:selected="${phoneNumbers.size == 10}">10</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div>
+                <form th:action="@{/api/phone_numbers/add_phone_number}" method="get">
+                    <input type="hidden" name="page" th:value="${page}">
+                    <input type="hidden" name="size" th:value="${size}">
+                    <button class="button btn btn-default" type="submit">Add contact</button>
+                </form>
             </div>
         </th:block>
         <th:block th:unless="${#lists.size(phoneNumbers) > 0}">
             <div>
                 <h2 class="catalog-name">There are no contacts yet!</h2>
-                <a class="btn btn-default" th:href="@{/api/phone_numbers/add_phone_number}">Add contact</a>
+                <form th:action="@{/api/phone_numbers/add_phone_number}" method="get">
+                    <input type="hidden" name="page" th:value="${page}">
+                    <input type="hidden" name="size" th:value="${size}">
+                    <button class="button btn btn-default" type="submit">Add contact</button>
+                </form>
             </div>
         </th:block>
         <div th:replace="fragments/footer :: footer"></div>

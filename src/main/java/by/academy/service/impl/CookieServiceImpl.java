@@ -5,6 +5,8 @@ import by.academy.repository.CookieRepository;
 import by.academy.service.CookieService;
 import by.academy.service.dto.CookieDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +28,12 @@ public class CookieServiceImpl implements CookieService {
                 .map(cookieRepository::save)
                 .map(cookieMapper::mapToDTO)
                 .orElseThrow();
+    }
+
+    @Override
+    public Page<CookieDTO> findAllCookies(Pageable pageable) {
+        return cookieRepository.findAll(pageable)
+                .map(cookieMapper::mapToDTO);
     }
 
     @Override

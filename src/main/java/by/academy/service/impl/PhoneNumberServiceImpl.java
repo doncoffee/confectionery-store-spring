@@ -5,6 +5,8 @@ import by.academy.repository.PhoneNumberRepository;
 import by.academy.service.PhoneNumberService;
 import by.academy.service.dto.PhoneNumberDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +28,12 @@ public class PhoneNumberServiceImpl implements PhoneNumberService {
                 .map(phoneNumberRepository::save)
                 .map(phoneNumberMapper::mapToDTO)
                 .orElseThrow();
+    }
+
+    @Override
+    public Page<PhoneNumberDTO> findAllPhoneNumbers(Pageable pageable) {
+        return phoneNumberRepository.findAll(pageable)
+                .map(phoneNumberMapper::mapToDTO);
     }
 
     @Override
