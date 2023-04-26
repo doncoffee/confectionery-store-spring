@@ -16,6 +16,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Objects;
+
 @Controller
 @RequestMapping("/api/sweets")
 @RequiredArgsConstructor
@@ -28,32 +30,40 @@ public class SweetsController {
 
     @GetMapping
     public String findAll(Model model,
-                          @PageableDefault(size = 3) Pageable pageable) {
+                          @PageableDefault(size = 3) Pageable pageable,
+                          @RequestParam(value = "search", required = false) String search) {
         Page<SweetsDTO> sweetsDTOPage =
-                sweetsService.findAllSweets(pageable);
+                sweetsService.findAllSweets(search, pageable);
         model.addAttribute("sweets", sweetsDTOPage);
         model.addAttribute("page", pageable.getPageNumber());
         model.addAttribute("size", pageable.getPageSize());
+        model.addAttribute("search", search);
         return "sweets/sweets";
     }
 
     @PostMapping("/add_sweets")
     public String create(@ModelAttribute SweetsDTO sweetsDTO,
-                         @RequestParam("page") int page,
-                         @RequestParam("size") int size) {
+                         @RequestParam("page") Integer page,
+                         @RequestParam("size") Integer size,
+                         @RequestParam(value = "search", required = false) String search) {
+        Objects.requireNonNull(page, "Page parameter must not be null");
+        Objects.requireNonNull(size, "Size parameter must not be null");
         sweetsService.createSweets(sweetsDTO);
-        return "redirect:/api/sweets?page=" + page + "&size=" + size;
+        return "redirect:/api/sweets?page=" + page + "&size=" + size + "&search=" + search;
     }
 
     @PostMapping("{id}/update")
     public String update(@PathVariable Long id,
                          @ModelAttribute SweetsDTO sweetsDTO,
-                         @RequestParam("page") int page,
-                         @RequestParam("size") int size) {
+                         @RequestParam("page") Integer page,
+                         @RequestParam("size") Integer size,
+                         @RequestParam(value = "search", required = false) String search) {
+        Objects.requireNonNull(page, "Page parameter must not be null");
+        Objects.requireNonNull(size, "Size parameter must not be null");
         sweetsService.updateSweets(id, sweetsDTO)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND));
-        return "redirect:/api/sweets?page=" + page + "&size=" + size;
+        return "redirect:/api/sweets?page=" + page + "&size=" + size + "&search=" + search;
     }
 
     @PostMapping("{id}/delete")
@@ -69,8 +79,11 @@ public class SweetsController {
     @GetMapping("/edit_sweets/{id}")
     public String goToEditPage(@PathVariable Long id,
                                Model model,
-                               @RequestParam("page") int page,
-                               @RequestParam("size") int size) {
+                               @RequestParam("page") Integer page,
+                               @RequestParam("size") Integer size,
+                               @RequestParam(value = "search", required = false) String search) {
+        Objects.requireNonNull(page, "Page parameter must not be null");
+        Objects.requireNonNull(size, "Size parameter must not be null");
         return sweetsService.findSweetsById(id)
                 .map(sweetsDTO -> {
                     model.addAttribute("sweets", sweetsDTO);
@@ -79,6 +92,7 @@ public class SweetsController {
                     model.addAttribute("suppliers", supplierService.findAllSuppliers());
                     model.addAttribute("page", page);
                     model.addAttribute("size", size);
+                    model.addAttribute("search", search);
                     return "sweets/edit-sweets";
                 })
                 .orElseThrow(() -> new ResponseStatusException(
@@ -87,13 +101,17 @@ public class SweetsController {
 
     @GetMapping("/add_sweets")
     public String goToAddPage(Model model,
-                              @RequestParam("page") int page,
-                              @RequestParam("size") int size) {
+                              @RequestParam("page") Integer page,
+                              @RequestParam("size") Integer size,
+                              @RequestParam(value = "search", required = false) String search) {
+        Objects.requireNonNull(page, "Page parameter must not be null");
+        Objects.requireNonNull(size, "Size parameter must not be null");
         model.addAttribute("brands", brandService.findAllBrands());
         model.addAttribute("stores", storeService.findAllStores());
         model.addAttribute("suppliers", supplierService.findAllSuppliers());
         model.addAttribute("page", page);
         model.addAttribute("size", size);
+        model.addAttribute("search", search);
         return "sweets/add-sweets";
     }
 }

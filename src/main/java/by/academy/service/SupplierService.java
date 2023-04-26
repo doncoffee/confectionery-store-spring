@@ -11,7 +11,7 @@ public interface SupplierService {
 
     SupplierDTO createSupplier(SupplierDTO supplierDTO);
 
-    Page<SupplierDTO> findAllSuppliers(Pageable pageable);
+    Page<SupplierDTO> findAllSuppliers(String search, Pageable pageable);
     List<SupplierDTO> findAllSuppliers();
 
     Optional<SupplierDTO> updateSupplier(Long id, SupplierDTO supplierDTO);

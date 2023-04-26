@@ -16,6 +16,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Objects;
+
 @Controller
 @RequestMapping("/api/chocolates")
 @RequiredArgsConstructor
@@ -28,32 +30,40 @@ public class ChocolateController {
 
     @GetMapping
     public String findAll(Model model,
-                          @PageableDefault(size = 3) Pageable pageable) {
+                          @PageableDefault(size = 3) Pageable pageable,
+                          @RequestParam(value = "search", required = false) String search) {
         Page<ChocolateDTO> chocolateDTOPage =
-                chocolateService.findAllChocolates(pageable);
+                chocolateService.findAllChocolates(search, pageable);
         model.addAttribute("chocolates", chocolateDTOPage);
         model.addAttribute("page", pageable.getPageNumber());
         model.addAttribute("size", pageable.getPageSize());
+        model.addAttribute("search", search);
         return "chocolate/chocolates";
     }
 
     @PostMapping("/add_chocolate")
     public String create(@ModelAttribute ChocolateDTO chocolateDTO,
-                         @RequestParam("page") int page,
-                         @RequestParam("size") int size) {
+                         @RequestParam("page") Integer page,
+                         @RequestParam("size") Integer size,
+                         @RequestParam(value = "search", required = false) String search) {
+        Objects.requireNonNull(page, "Page parameter must not be null");
+        Objects.requireNonNull(size, "Size parameter must not be null");
         chocolateService.createChocolate(chocolateDTO);
-        return "redirect:/api/chocolates?page=" + page + "&size=" + size;
+        return "redirect:/api/chocolates?page=" + page + "&size=" + size + "&search=" + search;
     }
 
     @PostMapping("{id}/update")
     public String update(@PathVariable Long id,
                          @ModelAttribute ChocolateDTO chocolateDTO,
-                         @RequestParam("page") int page,
-                         @RequestParam("size") int size) {
+                         @RequestParam("page") Integer page,
+                         @RequestParam("size") Integer size,
+                         @RequestParam(value = "search", required = false) String search) {
+        Objects.requireNonNull(page, "Page parameter must not be null");
+        Objects.requireNonNull(size, "Size parameter must not be null");
         chocolateService.updateChocolate(id, chocolateDTO)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND));
-        return "redirect:/api/chocolates?page=" + page + "&size=" + size;
+        return "redirect:/api/chocolates?page=" + page + "&size=" + size + "&search=" + search;
     }
 
     @PostMapping("{id}/delete")
@@ -69,8 +79,11 @@ public class ChocolateController {
     @GetMapping("/edit_chocolate/{id}")
     public String goToEditPage(@PathVariable Long id,
                                Model model,
-                               @RequestParam("page") int page,
-                               @RequestParam("size") int size) {
+                               @RequestParam("page") Integer page,
+                               @RequestParam("size") Integer size,
+                               @RequestParam(value = "search", required = false) String search) {
+        Objects.requireNonNull(page, "Page parameter must not be null");
+        Objects.requireNonNull(size, "Size parameter must not be null");
         return chocolateService.findChocolateById(id)
                 .map(chocolateDTO -> {
                     model.addAttribute("chocolate", chocolateDTO);
@@ -79,6 +92,7 @@ public class ChocolateController {
                     model.addAttribute("suppliers", supplierService.findAllSuppliers());
                     model.addAttribute("page", page);
                     model.addAttribute("size", size);
+                    model.addAttribute("search", search);
                     return "chocolate/edit-chocolate";
                 })
                 .orElseThrow(() -> new ResponseStatusException(
@@ -87,13 +101,17 @@ public class ChocolateController {
 
     @GetMapping("/add_chocolate")
     public String goToAddPage(Model model,
-                              @RequestParam("page") int page,
-                              @RequestParam("size") int size) {
+                              @RequestParam("page") Integer page,
+                              @RequestParam("size") Integer size,
+                              @RequestParam(value = "search", required = false) String search) {
+        Objects.requireNonNull(page, "Page parameter must not be null");
+        Objects.requireNonNull(size, "Size parameter must not be null");
         model.addAttribute("brands", brandService.findAllBrands());
         model.addAttribute("stores", storeService.findAllStores());
         model.addAttribute("suppliers", supplierService.findAllSuppliers());
         model.addAttribute("page", page);
         model.addAttribute("size", size);
+        model.addAttribute("search", search);
         return "chocolate/add-chocolate";
     }
 }

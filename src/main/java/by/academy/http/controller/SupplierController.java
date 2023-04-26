@@ -15,6 +15,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Objects;
+
 @Controller
 @RequestMapping("/api/suppliers")
 @RequiredArgsConstructor
@@ -26,32 +28,40 @@ public class SupplierController {
 
     @GetMapping
     public String findAll(Model model,
-                          @PageableDefault(size = 3) Pageable pageable) {
+                          @PageableDefault(size = 3) Pageable pageable,
+                          @RequestParam(value = "search", required = false) String search) {
         Page<SupplierDTO> supplierDTOPage =
-                supplierService.findAllSuppliers(pageable);
+                supplierService.findAllSuppliers(search, pageable);
         model.addAttribute("suppliers", supplierDTOPage);
         model.addAttribute("page", pageable.getPageNumber());
         model.addAttribute("size", pageable.getPageSize());
+        model.addAttribute("search", search);
         return "supplier/suppliers";
     }
 
     @PostMapping("/add_supplier")
     public String create(@ModelAttribute SupplierDTO supplierDTO,
-                         @RequestParam("page") int page,
-                         @RequestParam("size") int size) {
+                         @RequestParam("page") Integer page,
+                         @RequestParam("size") Integer size,
+                         @RequestParam(value = "search", required = false) String search) {
+        Objects.requireNonNull(page, "Page parameter must not be null");
+        Objects.requireNonNull(size, "Size parameter must not be null");
         supplierService.createSupplier(supplierDTO);
-        return "redirect:/api/suppliers?page=" + page + "&size=" + size;
+        return "redirect:/api/suppliers?page=" + page + "&size=" + size + "&search=" + search;
     }
 
     @PostMapping("{id}/update")
     public String update(@PathVariable Long id,
                          @ModelAttribute SupplierDTO supplierDTO,
-                         @RequestParam("page") int page,
-                         @RequestParam("size") int size) {
+                         @RequestParam("page") Integer page,
+                         @RequestParam("size") Integer size,
+                         @RequestParam(value = "search", required = false) String search) {
+        Objects.requireNonNull(page, "Page parameter must not be null");
+        Objects.requireNonNull(size, "Size parameter must not be null");
         supplierService.updateSupplier(id, supplierDTO)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND));
-        return "redirect:/api/suppliers?page=" + page + "&size=" + size;
+        return "redirect:/api/suppliers?page=" + page + "&size=" + size + "&search=" + search;
     }
 
     @PostMapping("{id}/delete")
@@ -67,8 +77,11 @@ public class SupplierController {
     @GetMapping("/edit_supplier/{id}")
     public String goToEditPage(@PathVariable Long id,
                                Model model,
-                               @RequestParam("page") int page,
-                               @RequestParam("size") int size) {
+                               @RequestParam("page") Integer page,
+                               @RequestParam("size") Integer size,
+                               @RequestParam(value = "search", required = false) String search) {
+        Objects.requireNonNull(page, "Page parameter must not be null");
+        Objects.requireNonNull(size, "Size parameter must not be null");
         return supplierService.findSupplierById(id)
                 .map(supplierDTO -> {
                     model.addAttribute("supplier", supplierDTO);
@@ -76,6 +89,7 @@ public class SupplierController {
                     model.addAttribute("phoneNumbers", phoneNumberService.findAllPhoneNumbers());
                     model.addAttribute("page", page);
                     model.addAttribute("size", size);
+                    model.addAttribute("search", search);
                     return "supplier/edit-supplier";
                 })
                 .orElseThrow(() -> new ResponseStatusException(
@@ -84,12 +98,16 @@ public class SupplierController {
 
     @GetMapping("/add_supplier")
     public String goToAddPage(Model model,
-                              @RequestParam("page") int page,
-                              @RequestParam("size") int size) {
+                              @RequestParam("page") Integer page,
+                              @RequestParam("size") Integer size,
+                              @RequestParam(value = "search", required = false) String search) {
+        Objects.requireNonNull(page, "Page parameter must not be null");
+        Objects.requireNonNull(size, "Size parameter must not be null");
         model.addAttribute("addresses", addressService.findAllAddresses());
         model.addAttribute("phoneNumbers", phoneNumberService.findAllPhoneNumbers());
         model.addAttribute("page", page);
         model.addAttribute("size", size);
+        model.addAttribute("search", search);
         return "supplier/add-supplier";
     }
 }

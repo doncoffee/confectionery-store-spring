@@ -11,7 +11,7 @@ public interface StoreService {
 
     StoreDTO createStore(StoreDTO storeDTO);
 
-    Page<StoreDTO> findAllStores(Pageable pageable);
+    Page<StoreDTO> findAllStores(String search, Pageable pageable);
     List<StoreDTO> findAllStores();
 
     Optional<StoreDTO> updateStore(Long id, StoreDTO storeDTO);

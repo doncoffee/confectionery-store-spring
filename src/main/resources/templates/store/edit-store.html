@@ -16,6 +16,7 @@
             <form th:action="@{/api/stores/{id}/update(id=${store.id})}" method="post">
                 <input type="hidden" name="page" th:value="${page}">
                 <input type="hidden" name="size" th:value="${size}">
+                <input type="hidden" name="search" th:value="${search}">
                 <label for="address" class="input">Address:
                     <select class="form-control input" id="address" name="addressId">
                         <option th:each="address : ${addresses}"

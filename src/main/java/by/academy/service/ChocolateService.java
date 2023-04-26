@@ -11,7 +11,7 @@ public interface ChocolateService {
 
     ChocolateDTO createChocolate(ChocolateDTO chocolateDTO);
 
-    Page<ChocolateDTO> findAllChocolates(Pageable pageable);
+    Page<ChocolateDTO> findAllChocolates(String search, Pageable pageable);
     List<ChocolateDTO> findAllChocolates();
 
     Optional<ChocolateDTO> updateChocolate(Long id, ChocolateDTO chocolateDTO);

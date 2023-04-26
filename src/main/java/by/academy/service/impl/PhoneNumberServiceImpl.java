@@ -31,9 +31,12 @@ public class PhoneNumberServiceImpl implements PhoneNumberService {
     }
 
     @Override
-    public Page<PhoneNumberDTO> findAllPhoneNumbers(Pageable pageable) {
-        return phoneNumberRepository.findAll(pageable)
-                .map(phoneNumberMapper::mapToDTO);
+    public Page<PhoneNumberDTO> findAllPhoneNumbers(String search, Pageable pageable) {
+        return (search == null) ?
+                phoneNumberRepository.findAll(pageable)
+                        .map(phoneNumberMapper::mapToDTO) :
+                phoneNumberRepository.findAllBySearchAndPage(search, pageable)
+                        .map(phoneNumberMapper::mapToDTO);
     }
 
     @Override

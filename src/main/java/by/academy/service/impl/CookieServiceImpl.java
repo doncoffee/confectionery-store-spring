@@ -31,9 +31,12 @@ public class CookieServiceImpl implements CookieService {
     }
 
     @Override
-    public Page<CookieDTO> findAllCookies(Pageable pageable) {
-        return cookieRepository.findAll(pageable)
-                .map(cookieMapper::mapToDTO);
+    public Page<CookieDTO> findAllCookies(String search, Pageable pageable) {
+        return (search == null) ?
+                cookieRepository.findAll(pageable)
+                        .map(cookieMapper::mapToDTO) :
+                cookieRepository.findAllBySearchAndPage(search, pageable)
+                        .map(cookieMapper::mapToDTO);
     }
 
     @Override

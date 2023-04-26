@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -31,9 +30,12 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public Page<AddressDTO> findAllAddresses(Pageable pageable) {
-        return addressRepository.findAll(pageable)
-                .map(addressMapper::mapToDTO);
+    public Page<AddressDTO> findAllAddresses(String search, Pageable pageable) {
+        return (search == null) ?
+                addressRepository.findAll(pageable)
+                        .map(addressMapper::mapToDTO) :
+                addressRepository.findAllBySearchAndPage(search, pageable)
+                        .map(addressMapper::mapToDTO);
     }
 
     @Override

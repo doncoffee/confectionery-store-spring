@@ -16,6 +16,7 @@
             <form th:action="@{/api/suppliers/{id}/update(id=${supplier.id})}" method="post">
                 <input type="hidden" name="page" th:value="${page}">
                 <input type="hidden" name="size" th:value="${size}">
+                <input type="hidden" name="search" th:value="${search}">
                 <label for="name" class="input">Name:
                     <input class="input form-control" id="name" placeholder="Enter name" type="text" name="name"
                            th:value="${supplier.name}">

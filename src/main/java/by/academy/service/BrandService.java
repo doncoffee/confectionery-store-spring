@@ -11,7 +11,7 @@ public interface BrandService {
 
     BrandDTO createBrand(BrandDTO brandDTO);
 
-    Page<BrandDTO> findAllBrands(Pageable pageable);
+    Page<BrandDTO> findAllBrands(String search, Pageable pageable);
     List<BrandDTO> findAllBrands();
 
     Optional<BrandDTO> updateBrand(Long id, BrandDTO brandDTO);

@@ -11,7 +11,7 @@ public interface SweetsService {
 
     SweetsDTO createSweets(SweetsDTO sweetsDTO);
 
-    Page<SweetsDTO> findAllSweets(Pageable pageable);
+    Page<SweetsDTO> findAllSweets(String search, Pageable pageable);
     List<SweetsDTO> findAllSweets();
 
     Optional<SweetsDTO> updateSweets(Long id, SweetsDTO sweetsDTO);

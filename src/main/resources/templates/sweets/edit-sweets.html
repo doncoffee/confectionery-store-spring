@@ -16,6 +16,7 @@
             <form th:action="@{/api/sweets/{id}/update(id=${sweets.id})}" method="post">
                 <input type="hidden" name="page" th:value="${page}">
                 <input type="hidden" name="size" th:value="${size}">
+                <input type="hidden" name="search" th:value="${search}">
                 <label for="price" class="input">Price:
                     <input class="input form-control" id="price" placeholder="Enter price" type="text" name="price"
                            th:value="${sweets.price}">

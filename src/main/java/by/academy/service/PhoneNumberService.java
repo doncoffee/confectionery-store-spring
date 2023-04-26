@@ -11,7 +11,7 @@ public interface PhoneNumberService {
 
     PhoneNumberDTO createPhoneNumber(PhoneNumberDTO phoneNumberDTO);
 
-    Page<PhoneNumberDTO> findAllPhoneNumbers(Pageable pageable);
+    Page<PhoneNumberDTO> findAllPhoneNumbers(String search, Pageable pageable);
     List<PhoneNumberDTO> findAllPhoneNumbers();
 
     Optional<PhoneNumberDTO> updatePhoneNumber(Long id, PhoneNumberDTO phoneNumberDTO);

@@ -16,6 +16,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Objects;
+
 @Controller
 @RequestMapping("/api/cookies")
 @RequiredArgsConstructor
@@ -28,31 +30,39 @@ public class CookieController {
 
     @GetMapping
     public String findAll(Model model,
-                          @PageableDefault(size = 3) Pageable pageable) {
+                          @PageableDefault(size = 3) Pageable pageable,
+                          @RequestParam(value = "search", required = false) String search) {
         Page<CookieDTO> cookieDTOPage =
-                cookieService.findAllCookies(pageable);
+                cookieService.findAllCookies(search, pageable);
         model.addAttribute("cookies", cookieDTOPage);
         model.addAttribute("page", pageable.getPageNumber());
         model.addAttribute("size", pageable.getPageSize());
+        model.addAttribute("search", search);
         return "cookie/cookies";
     }
 
     @PostMapping("/add_cookie")
     public String create(@ModelAttribute CookieDTO cookieDTO,
-                         @RequestParam("page") int page,
-                         @RequestParam("size") int size) {
+                         @RequestParam("page") Integer page,
+                         @RequestParam("size") Integer size,
+                         @RequestParam(value = "search", required = false) String search) {
+        Objects.requireNonNull(page, "Page parameter must not be null");
+        Objects.requireNonNull(size, "Size parameter must not be null");
         cookieService.createCookie(cookieDTO);
-        return "redirect:/api/cookies?page=" + page + "&size=" + size;
+        return "redirect:/api/cookies?page=" + page + "&size=" + size + "&search=" + search;
     }
 
     @PostMapping("{id}/update")
     public String update(@PathVariable Long id,
                          @ModelAttribute CookieDTO cookieDTO,
-                         @RequestParam("page") int page,
-                         @RequestParam("size") int size) {
+                         @RequestParam("page") Integer page,
+                         @RequestParam("size") Integer size,
+                         @RequestParam(value = "search", required = false) String search) {
+        Objects.requireNonNull(page, "Page parameter must not be null");
+        Objects.requireNonNull(size, "Size parameter must not be null");
         cookieService.updateCookie(id, cookieDTO)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        return "redirect:/api/cookies?page=" + page + "&size=" + size;
+        return "redirect:/api/cookies?page=" + page + "&size=" + size + "&search=" + search;
     }
 
     @PostMapping("{id}/delete")
@@ -68,8 +78,11 @@ public class CookieController {
     @GetMapping("/edit_cookie/{id}")
     public String goToEditPage(@PathVariable Long id,
                                Model model,
-                               @RequestParam("page") int page,
-                               @RequestParam("size") int size) {
+                               @RequestParam("page") Integer page,
+                               @RequestParam("size") Integer size,
+                               @RequestParam(value = "search", required = false) String search) {
+        Objects.requireNonNull(page, "Page parameter must not be null");
+        Objects.requireNonNull(size, "Size parameter must not be null");
         return cookieService.findCookieById(id)
                 .map(cookieDTO -> {
                     model.addAttribute("cookie", cookieDTO);
@@ -78,6 +91,7 @@ public class CookieController {
                     model.addAttribute("suppliers", supplierService.findAllSuppliers());
                     model.addAttribute("page", page);
                     model.addAttribute("size", size);
+                    model.addAttribute("search", search);
                     return "cookie/edit-cookie";
                 })
                 .orElseThrow(() -> new ResponseStatusException(
@@ -86,13 +100,17 @@ public class CookieController {
 
     @GetMapping("/add_cookie")
     public String goToAddPage(Model model,
-                              @RequestParam("page") int page,
-                              @RequestParam("size") int size) {
+                              @RequestParam("page") Integer page,
+                              @RequestParam("size") Integer size,
+                              @RequestParam(value = "search", required = false) String search) {
+        Objects.requireNonNull(page, "Page parameter must not be null");
+        Objects.requireNonNull(size, "Size parameter must not be null");
         model.addAttribute("brands", brandService.findAllBrands());
         model.addAttribute("stores", storeService.findAllStores());
         model.addAttribute("suppliers", supplierService.findAllSuppliers());
         model.addAttribute("page", page);
         model.addAttribute("size", size);
+        model.addAttribute("search", search);
         return "cookie/add-cookie";
     }
 }

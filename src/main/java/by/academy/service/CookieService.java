@@ -11,7 +11,7 @@ public interface CookieService {
 
     CookieDTO createCookie(CookieDTO cookieDTO);
 
-    Page<CookieDTO> findAllCookies(Pageable pageable);
+    Page<CookieDTO> findAllCookies(String search, Pageable pageable);
     List<CookieDTO> findAllCookies();
 
     Optional<CookieDTO> updateCookie(Long id, CookieDTO cookieDTO);

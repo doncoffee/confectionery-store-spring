@@ -14,7 +14,14 @@
         <h1>Stores</h1>
     </div>
     <div class="main">
-        <th:block th:if="${#lists.size(stores) > 0}">
+        <form method="get" action="#" th:action="@{/api/stores}">
+            <label for="search">Search:</label>
+            <input type="text" name="search" id="search" th:value="${search}">
+            <input type="hidden" name="page" th:value="${page}">
+            <input type="hidden" name="size" th:value="${size}">
+            <button class="button btn btn-default" type="submit">Submit</button>
+        </form>
+        <th:block th:if="${#lists.size(stores.content) > 0}">
             <table class="table table-striped">
                 <thead>
                 <tr>
@@ -33,6 +40,7 @@
                         <form th:action="@{/api/stores/edit_store/{id}(id=${store.id})}" method="get">
                             <input type="hidden" name="page" th:value="${page}">
                             <input type="hidden" name="size" th:value="${size}">
+                            <input type="hidden" name="search" th:value="${search}">
                             <button class="button btn btn-default" type="submit">EDIT</button>
                         </form>
                     </td>
@@ -40,6 +48,7 @@
                         <form th:action="@{/api/stores/{id}/delete(id=${store.id})}" method="post">
                             <input type="hidden" name="page" th:value="${stores.number}">
                             <input type="hidden" name="size" th:value="${stores.size}">
+                            <input type="hidden" name="search" th:value="${search}">
                             <button class="button btn btn-default" type="submit">DELETE</button>
                         </form>
                     </td>
@@ -51,21 +60,22 @@
                     <ul class="pagination" th:if="${stores.totalPages > 1}">
                         <li class="page-item" th:classappend="${stores.first ? 'disabled' : ''}">
                             <a class="page-link"
-                               th:href="@{${'/api/stores?page=' + (stores.number - 1) + '&size=' + stores.size}}">&laquo;</a>
+                               th:href="@{${'/api/stores?page=' + (stores.number - 1) + '&size=' + stores.size + (search != null ? '&search=' + search : '')}}">&laquo;</a>
                         </li>
                         <li th:each="page : ${#numbers.sequence(0, stores.totalPages - 1)}"
                             th:classappend="${page == stores.number ? 'active' : ''}"
                             class="page-item">
                             <a class="page-link"
-                               th:href="@{${'/api/stores?page=' + page + '&size=' + stores.size}}"
+                               th:href="@{${'/api/stores?page=' + page + '&size=' + stores.size + (search != null ? '&search=' + search : '')}}"
                                th:text="${page + 1}"></a>
                         </li>
                         <li class="page-item" th:classappend="${stores.last ? 'disabled' : ''}">
                             <a class="page-link"
-                               th:href="@{${'/api/stores?page=' + (stores.number + 1) + '&size=' + stores.size}}">&raquo;</a>
+                               th:href="@{${'/api/stores?page=' + (stores.number + 1) + '&size=' + stores.size + (search != null ? '&search=' + search : '')}}">&raquo;</a>
                         </li>
                     </ul>
                     <input type="hidden" name="page" th:value="${stores.number}">
+                    <input type="hidden" name="search" th:value="${search}">
                     <div class="form-group">
                         <select class="form select" id="size" name="size" onchange="this.form.submit()">
                             <option value="3" th:selected="${stores.size == 3}">3</option>
@@ -79,16 +89,18 @@
                 <form th:action="@{/api/stores/add_store}" method="get">
                     <input type="hidden" name="page" th:value="${page}">
                     <input type="hidden" name="size" th:value="${size}">
+                    <input type="hidden" name="search" th:value="${search}">
                     <button class="button btn btn-default" type="submit">Add store</button>
                 </form>
             </div>
         </th:block>
-        <th:block th:unless="${#lists.size(stores) > 0}">
+        <th:block th:unless="${#lists.size(stores.content) > 0}">
             <div>
                 <h2 class="catalog-name">There are no stores yet!</h2>
                 <form th:action="@{/api/stores/add_store}" method="get">
                     <input type="hidden" name="page" th:value="${page}">
                     <input type="hidden" name="size" th:value="${size}">
+                    <input type="hidden" name="search" th:value="${search}">
                     <button class="button btn btn-default" type="submit">Add store</button>
                 </form>
             </div>

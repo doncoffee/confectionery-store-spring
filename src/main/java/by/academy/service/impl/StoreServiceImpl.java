@@ -31,9 +31,12 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public Page<StoreDTO> findAllStores(Pageable pageable) {
-        return storeRepository.findAll(pageable)
-                .map(storeMapper::mapToDTO);
+    public Page<StoreDTO> findAllStores(String search, Pageable pageable) {
+        return (search == null) ?
+                storeRepository.findAll(pageable)
+                        .map(storeMapper::mapToDTO) :
+                storeRepository.findAllBySearchAndPage(search, pageable)
+                        .map(storeMapper::mapToDTO);
     }
 
     @Override

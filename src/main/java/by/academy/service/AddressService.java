@@ -11,7 +11,7 @@ public interface AddressService {
 
     AddressDTO createAddress(AddressDTO addressDTO);
 
-    Page<AddressDTO> findAllAddresses(Pageable pageable);
+    Page<AddressDTO> findAllAddresses(String search, Pageable pageable);
 
     List<AddressDTO> findAllAddresses();
 
