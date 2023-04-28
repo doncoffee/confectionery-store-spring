@@ -32,7 +32,7 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public Page<AddressDTO> findAllAddresses(String search, Pageable pageable) {
         return (search == null) ?
-                addressRepository.findAll(pageable)
+                addressRepository.findAllByOrderById(pageable)
                         .map(addressMapper::mapToDTO) :
                 addressRepository.findAllBySearchAndPage(search, pageable)
                         .map(addressMapper::mapToDTO);

@@ -13,6 +13,8 @@ public interface SupplierRepository extends JpaRepository<Supplier, Long> {
             "LOWER(s.name) LIKE LOWER(CONCAT('%', :search, '%')) OR " +
             "LOWER(s.contactPerson) LIKE LOWER(CONCAT('%', :search, '%')) OR " +
             "LOWER(s.address.name) LIKE LOWER(CONCAT('%', :search, '%')) OR " +
-            "LOWER(s.phoneNumber.number) LIKE LOWER(CONCAT('%', :search, '%'))")
+            "LOWER(s.phoneNumber.number) LIKE LOWER(CONCAT('%', :search, '%'))" +
+            "GROUP BY s.id ORDER BY s.id")
     Page<Supplier> findAllBySearchAndPage(@Param("search") String search, Pageable pageable);
+    Page<Supplier> findAllByOrderById(Pageable pageable);
 }

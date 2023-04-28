@@ -33,7 +33,7 @@ public class BrandServiceImpl implements BrandService {
     @Override
     public Page<BrandDTO> findAllBrands(String search, Pageable pageable) {
         return (search == null) ?
-                brandRepository.findAll(pageable)
+                brandRepository.findAllByOrderById(pageable)
                         .map(brandMapper::mapToDTO) :
                 brandRepository.findAllBySearchAndPage(search, pageable)
                         .map(brandMapper::mapToDTO);
