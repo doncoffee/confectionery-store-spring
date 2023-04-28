@@ -13,6 +13,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -42,28 +44,55 @@ public class ChocolateController {
     }
 
     @PostMapping("/add_chocolate")
-    public String create(@ModelAttribute ChocolateDTO chocolateDTO,
+    public String create(@ModelAttribute @Validated ChocolateDTO chocolateDTO,
+                         BindingResult bindingResult,
+                         Model model,
                          @RequestParam("page") Integer page,
                          @RequestParam("size") Integer size,
                          @RequestParam(value = "search", required = false) String search) {
         Objects.requireNonNull(page, "Page parameter must not be null");
         Objects.requireNonNull(size, "Size parameter must not be null");
-        chocolateService.createChocolate(chocolateDTO);
-        return "redirect:/api/chocolates?page=" + page + "&size=" + size + "&search=" + search;
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("errors", bindingResult.getAllErrors());
+            model.addAttribute("brands", brandService.findAllBrands());
+            model.addAttribute("stores", storeService.findAllStores());
+            model.addAttribute("suppliers", supplierService.findAllSuppliers());
+            model.addAttribute("page", page);
+            model.addAttribute("size", size);
+            model.addAttribute("search", search);
+            return "chocolate/add-chocolate";
+        } else {
+            chocolateService.createChocolate(chocolateDTO);
+            return "redirect:/api/chocolates?page=" + page + "&size=" + size + "&search=" + search;
+        }
     }
 
     @PostMapping("{id}/update")
     public String update(@PathVariable Long id,
-                         @ModelAttribute ChocolateDTO chocolateDTO,
+                         @ModelAttribute @Validated ChocolateDTO chocolateDTO,
+                         BindingResult bindingResult,
+                         Model model,
                          @RequestParam("page") Integer page,
                          @RequestParam("size") Integer size,
                          @RequestParam(value = "search", required = false) String search) {
         Objects.requireNonNull(page, "Page parameter must not be null");
         Objects.requireNonNull(size, "Size parameter must not be null");
-        chocolateService.updateChocolate(id, chocolateDTO)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND));
-        return "redirect:/api/chocolates?page=" + page + "&size=" + size + "&search=" + search;
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("errors", bindingResult.getAllErrors());
+            model.addAttribute("chocolate", chocolateDTO);
+            model.addAttribute("brands", brandService.findAllBrands());
+            model.addAttribute("stores", storeService.findAllStores());
+            model.addAttribute("suppliers", supplierService.findAllSuppliers());
+            model.addAttribute("page", page);
+            model.addAttribute("size", size);
+            model.addAttribute("search", search);
+            return "chocolate/edit-chocolate";
+        } else {
+            chocolateService.updateChocolate(id, chocolateDTO)
+                    .orElseThrow(() -> new ResponseStatusException(
+                            HttpStatus.NOT_FOUND));
+            return "redirect:/api/chocolates?page=" + page + "&size=" + size + "&search=" + search;
+        }
     }
 
     @PostMapping("{id}/delete")

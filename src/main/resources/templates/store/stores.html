@@ -9,7 +9,7 @@
 </head>
 <body>
 <div class="wrapper">
-    <div th:replace="fragments/header :: header"></div>
+    <div th:replace="~{fragments/header :: header}"></div>
     <div class="catalog-name">
         <h1>Stores</h1>
     </div>
@@ -105,7 +105,7 @@
                 </form>
             </div>
         </th:block>
-        <div th:replace="fragments/footer :: footer"></div>
+        <div th:replace="~{fragments/footer :: footer}"></div>
     </div>
 </div>
 </body>

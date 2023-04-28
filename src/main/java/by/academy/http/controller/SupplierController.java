@@ -12,6 +12,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -40,28 +42,53 @@ public class SupplierController {
     }
 
     @PostMapping("/add_supplier")
-    public String create(@ModelAttribute SupplierDTO supplierDTO,
+    public String create(@ModelAttribute @Validated SupplierDTO supplierDTO,
+                         BindingResult bindingResult,
+                         Model model,
                          @RequestParam("page") Integer page,
                          @RequestParam("size") Integer size,
                          @RequestParam(value = "search", required = false) String search) {
         Objects.requireNonNull(page, "Page parameter must not be null");
         Objects.requireNonNull(size, "Size parameter must not be null");
-        supplierService.createSupplier(supplierDTO);
-        return "redirect:/api/suppliers?page=" + page + "&size=" + size + "&search=" + search;
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("errors", bindingResult.getAllErrors());
+            model.addAttribute("addresses", addressService.findAllAddresses());
+            model.addAttribute("phoneNumbers", phoneNumberService.findAllPhoneNumbers());
+            model.addAttribute("page", page);
+            model.addAttribute("size", size);
+            model.addAttribute("search", search);
+            return "supplier/add-supplier";
+        } else {
+            supplierService.createSupplier(supplierDTO);
+            return "redirect:/api/suppliers?page=" + page + "&size=" + size + "&search=" + search;
+        }
     }
 
     @PostMapping("{id}/update")
     public String update(@PathVariable Long id,
-                         @ModelAttribute SupplierDTO supplierDTO,
+                         @ModelAttribute @Validated SupplierDTO supplierDTO,
+                         BindingResult bindingResult,
+                         Model model,
                          @RequestParam("page") Integer page,
                          @RequestParam("size") Integer size,
                          @RequestParam(value = "search", required = false) String search) {
         Objects.requireNonNull(page, "Page parameter must not be null");
         Objects.requireNonNull(size, "Size parameter must not be null");
-        supplierService.updateSupplier(id, supplierDTO)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND));
-        return "redirect:/api/suppliers?page=" + page + "&size=" + size + "&search=" + search;
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("errors", bindingResult.getAllErrors());
+            model.addAttribute("supplier", supplierDTO);
+            model.addAttribute("addresses", addressService.findAllAddresses());
+            model.addAttribute("phoneNumbers", phoneNumberService.findAllPhoneNumbers());
+            model.addAttribute("page", page);
+            model.addAttribute("size", size);
+            model.addAttribute("search", search);
+            return "supplier/edit-supplier";
+        } else {
+            supplierService.updateSupplier(id, supplierDTO)
+                    .orElseThrow(() -> new ResponseStatusException(
+                            HttpStatus.NOT_FOUND));
+            return "redirect:/api/suppliers?page=" + page + "&size=" + size + "&search=" + search;
+        }
     }
 
     @PostMapping("{id}/delete")

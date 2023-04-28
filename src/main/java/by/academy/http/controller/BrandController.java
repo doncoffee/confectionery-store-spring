@@ -10,6 +10,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -34,29 +36,51 @@ public class BrandController {
         return "brand/brands";
     }
 
-    @PostMapping("add_brand")
-    public String create(@ModelAttribute BrandDTO brandDTO,
+    @PostMapping("/add_brand")
+    public String create(@ModelAttribute @Validated BrandDTO brandDTO,
+                         BindingResult bindingResult,
+                         Model model,
                          @RequestParam("page") Integer page,
                          @RequestParam("size") Integer size,
                          @RequestParam(value = "search", required = false) String search) {
         Objects.requireNonNull(page, "Page parameter must not be null");
         Objects.requireNonNull(size, "Size parameter must not be null");
-        brandService.createBrand(brandDTO);
-        return "redirect:/api/brands?page=" + page + "&size=" + size + "&search=" + search;
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("errors", bindingResult.getAllErrors());
+            model.addAttribute("page", page);
+            model.addAttribute("size", size);
+            model.addAttribute("search", search);
+            return "brand/add-brand";
+        } else {
+            brandService.createBrand(brandDTO);
+            return "redirect:/api/brands?page=" + page + "&size=" + size + "&search=" + search;
+        }
     }
 
     @PostMapping("{id}/update")
     public String update(@PathVariable Long id,
-                         @ModelAttribute BrandDTO brandDTO,
+                         @ModelAttribute @Validated BrandDTO brandDTO,
+                         BindingResult bindingResult,
+                         Model model,
                          @RequestParam("page") Integer page,
                          @RequestParam("size") Integer size,
                          @RequestParam(value = "search", required = false) String search) {
         Objects.requireNonNull(page, "Page parameter must not be null");
         Objects.requireNonNull(size, "Size parameter must not be null");
-        brandService.updateBrand(id, brandDTO)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND));
-        return "redirect:/api/brands?page=" + page + "&size=" + size + "&search=" + search;
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("errors", bindingResult.getAllErrors());
+            model.addAttribute("brand", brandDTO);
+            model.addAttribute("page", page);
+            model.addAttribute("size", size);
+            model.addAttribute("search", search);
+            return "brand/edit-brand";
+        } else {
+            brandService.updateBrand(id, brandDTO)
+                    .orElseThrow(() -> new ResponseStatusException(
+                            HttpStatus.NOT_FOUND));
+            return "redirect:/api/brands?page=" + page + "&size=" + size + "&search=" + search;
+        }
+
     }
 
     @PostMapping("{id}/delete")

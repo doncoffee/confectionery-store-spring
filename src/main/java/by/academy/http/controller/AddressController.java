@@ -10,8 +10,11 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Objects;
 
@@ -35,28 +38,49 @@ public class AddressController {
     }
 
     @PostMapping("/add_address")
-    public String create(@ModelAttribute AddressDTO addressDTO,
+    public String create(@ModelAttribute @Validated AddressDTO addressDTO,
+                         BindingResult bindingResult,
+                         Model model,
                          @RequestParam("page") Integer page,
                          @RequestParam("size") Integer size,
                          @RequestParam(value = "search", required = false) String search) {
         Objects.requireNonNull(page, "Page parameter must not be null");
         Objects.requireNonNull(size, "Size parameter must not be null");
-        addressService.createAddress(addressDTO);
-        return "redirect:/api/addresses?page=" + page + "&size=" + size + "&search=" + search;
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("errors", bindingResult.getAllErrors());
+            model.addAttribute("page", page);
+            model.addAttribute("size", size);
+            model.addAttribute("search", search);
+            return "address/add-address";
+        } else {
+            addressService.createAddress(addressDTO);
+            return "redirect:/api/addresses?page=" + page + "&size=" + size + "&search=" + search;
+        }
     }
 
     @PostMapping("/{id}/update")
     public String update(@PathVariable("id") Long id,
-                         @ModelAttribute AddressDTO addressDTO,
+                         @ModelAttribute @Validated AddressDTO addressDTO,
+                         BindingResult bindingResult,
+                         Model model,
                          @RequestParam("page") Integer page,
                          @RequestParam("size") Integer size,
                          @RequestParam(value = "search", required = false) String search) {
         Objects.requireNonNull(page, "Page parameter must not be null");
         Objects.requireNonNull(size, "Size parameter must not be null");
-        addressService.updateAddress(id, addressDTO)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND));
-        return "redirect:/api/addresses?page=" + page + "&size=" + size + "&search=" + search;
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("errors", bindingResult.getAllErrors());
+            model.addAttribute("address", addressDTO);
+            model.addAttribute("page", page);
+            model.addAttribute("size", size);
+            model.addAttribute("search", search);
+            return "address/edit-address";
+        } else {
+            addressService.updateAddress(id, addressDTO)
+                    .orElseThrow(() -> new ResponseStatusException(
+                            HttpStatus.NOT_FOUND));
+            return "redirect:/api/addresses?page=" + page + "&size=" + size + "&search=" + search;
+        }
     }
 
     @PostMapping("/{id}/delete")

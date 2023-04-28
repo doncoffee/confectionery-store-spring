@@ -5,7 +5,7 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
 </head>
 <body>
-<div th:replace="fragments/header :: header"></div>
+<div th:replace="~{fragments/header :: header}"></div>
 <div class="catalog-name">
     <h1>Product catalog</h1>
 </div>
@@ -24,6 +24,6 @@
         <span>Sweets</span>
     </a>
 </div>
-<div th:replace="fragments/footer :: footer"></div>
+<div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html>

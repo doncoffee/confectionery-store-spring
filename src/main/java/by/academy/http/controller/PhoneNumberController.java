@@ -10,6 +10,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -36,28 +38,49 @@ public class PhoneNumberController {
     }
 
     @PostMapping("/add_phone_number")
-    public String create(@ModelAttribute PhoneNumberDTO phoneNumberDTO,
+    public String create(@ModelAttribute @Validated PhoneNumberDTO phoneNumberDTO,
+                         BindingResult bindingResult,
+                         Model model,
                          @RequestParam("page") Integer page,
                          @RequestParam("size") Integer size,
                          @RequestParam(value = "search", required = false) String search) {
         Objects.requireNonNull(page, "Page parameter must not be null");
         Objects.requireNonNull(size, "Size parameter must not be null");
-        phoneNumberService.createPhoneNumber(phoneNumberDTO);
-        return "redirect:/api/phone_numbers?page=" + page + "&size=" + size + "&search=" + search;
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("errors", bindingResult.getAllErrors());
+            model.addAttribute("page", page);
+            model.addAttribute("size", size);
+            model.addAttribute("search", search);
+            return "contacts/add-phone-number";
+        } else {
+            phoneNumberService.createPhoneNumber(phoneNumberDTO);
+            return "redirect:/api/phone_numbers?page=" + page + "&size=" + size + "&search=" + search;
+        }
     }
 
     @PostMapping("{id}/update")
     public String update(@PathVariable Long id,
-                         @ModelAttribute PhoneNumberDTO phoneNumberDTO,
+                         @ModelAttribute @Validated PhoneNumberDTO phoneNumberDTO,
+                         BindingResult bindingResult,
+                         Model model,
                          @RequestParam("page") Integer page,
                          @RequestParam("size") Integer size,
                          @RequestParam(value = "search", required = false) String search) {
         Objects.requireNonNull(page, "Page parameter must not be null");
         Objects.requireNonNull(size, "Size parameter must not be null");
-        phoneNumberService.updatePhoneNumber(id, phoneNumberDTO)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND));
-        return "redirect:/api/phone_numbers?page=" + page + "&size=" + size + "&search=" + search;
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("errors", bindingResult.getAllErrors());
+            model.addAttribute("phoneNumber", phoneNumberDTO);
+            model.addAttribute("page", page);
+            model.addAttribute("size", size);
+            model.addAttribute("search", search);
+            return "contacts/edit-phone-number";
+        } else {
+            phoneNumberService.updatePhoneNumber(id, phoneNumberDTO)
+                    .orElseThrow(() -> new ResponseStatusException(
+                            HttpStatus.NOT_FOUND));
+            return "redirect:/api/phone_numbers?page=" + page + "&size=" + size + "&search=" + search;
+        }
     }
 
     @PostMapping("{id}/delete")
