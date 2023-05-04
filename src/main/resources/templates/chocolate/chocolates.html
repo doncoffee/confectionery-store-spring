@@ -46,7 +46,7 @@
                     <td th:text="${chocolate.brandName}"></td>
                     <td th:text="${chocolate.storeName}"></td>
                     <td th:text="${chocolate.supplierName}"></td>
-                    <td>
+                    <td th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
                         <form th:action="@{/api/chocolates/edit_chocolate/{id}(id=${chocolate.id})}" method="get">
                             <input type="hidden" name="page" th:value="${page}">
                             <input type="hidden" name="size" th:value="${size}">
@@ -54,12 +54,20 @@
                             <button class="button btn btn-default" type="submit">EDIT</button>
                         </form>
                     </td>
-                    <td>
+                    <td th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
                         <form th:action="@{/api/chocolates/{id}/delete(id=${chocolate.id})}" method="post">
                             <input type="hidden" name="page" th:value="${chocolates.number}">
                             <input type="hidden" name="size" th:value="${chocolates.size}">
                             <input type="hidden" name="search" th:value="${search}">
                             <button class="button btn btn-default" type="submit">DELETE</button>
+                        </form>
+                    </td>
+                    <td th:unless="${#authorization.expression('hasAuthority(''ADMIN'')')}">
+                        <form th:action="@{/api/chocolates/{id}/delete(id=${chocolate.id})}" method="post">
+                            <input type="hidden" name="page" th:value="${chocolates.number}">
+                            <input type="hidden" name="size" th:value="${chocolates.size}">
+                            <input type="hidden" name="search" th:value="${search}">
+                            <button class="button btn btn-default" type="submit">ADD TO CART</button>
                         </form>
                     </td>
                 </tr>

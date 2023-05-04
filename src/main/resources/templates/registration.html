@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Registration</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+<div class="wrapper">
+    <div th:replace="~{fragments/header :: header}"></div>
+    <div class="main">
+        <div class="block">
+            <h2 class="catalog-name">Sign up</h2>
+            <form th:action="@{/registration/create_user}" method="post">
+                <label for="username" class="input">Username:
+                    <input class="input form-control" id="username" placeholder="Enter username" type="text"
+                           name="username">
+                </label>
+                <label for="rawPassword" class="input">Password:
+                    <input class="input form-control" id="rawPassword" placeholder="Enter password" type="password"
+                           name="rawPassword">
+                </label>
+                    <input th:unless="${#authorization.expression('hasAuthority(''ADMIN'')')}" type="hidden" name="role" value="USER">
+                <div th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}" th:each="role : ${roles}">
+                    <input th:id="${role}" type="radio" name="role" th:value="${role}">
+                    <label th:for="${role}" th:text="${role}">Role name</label>
+                </div>
+                <div class="error-message" th:if="${param.error}">
+                    Bad credentials
+                </div>
+                <button type="submit" class="btn btn-default">Submit</button>
+                <a class="btn btn-default" href="javascript:history.back()">Cancel</a>
+            </form>
+            <div th:if="${errors}">
+                <p class="error-message" th:each="error : ${errors}" th:text="${error.defaultMessage}">Error message</p>
+            </div>
+        </div>
+        <div th:replace="~{fragments/footer :: footer}"></div>
+    </div>
+</div>
+</body>
+</html>

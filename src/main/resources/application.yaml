@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5433/confectionery-store?createDatabaseIfNotExists=true
+    url: jdbc:postgresql://localhost:5433/confectionery-store?createDatabaseIfNotExist=true
     username: postgres
     password: pass
     driver-class-name: org.postgresql.Driver

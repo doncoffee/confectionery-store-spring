@@ -46,7 +46,7 @@
                     <td th:text="${candy.brandName}"></td>
                     <td th:text="${candy.storeName}"></td>
                     <td th:text="${candy.supplierName}"></td>
-                    <td>
+                    <td th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
                         <form th:action="@{/api/sweets/edit_sweets/{id}(id=${candy.id})}" method="get">
                             <input type="hidden" name="page" th:value="${page}">
                             <input type="hidden" name="size" th:value="${size}">
@@ -54,12 +54,20 @@
                             <button class="button btn btn-default" type="submit">EDIT</button>
                         </form>
                     </td>
-                    <td>
+                    <td th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
                         <form th:action="@{/api/sweets/{id}/delete(id=${candy.id})}" method="post">
                             <input type="hidden" name="page" th:value="${sweets.number}">
                             <input type="hidden" name="size" th:value="${sweets.size}">
                             <input type="hidden" name="search" th:value="${search}">
                             <button class="button btn btn-default" type="submit">DELETE</button>
+                        </form>
+                    </td>
+                    <td th:unless="${#authorization.expression('hasAuthority(''ADMIN'')')}">
+                        <form th:action="@{/api/sweets/{id}/delete(id=${candy.id})}" method="post">
+                            <input type="hidden" name="page" th:value="${sweets.number}">
+                            <input type="hidden" name="size" th:value="${sweets.size}">
+                            <input type="hidden" name="search" th:value="${search}">
+                            <button class="button btn btn-default" type="submit">ADD TO CART</button>
                         </form>
                     </td>
                 </tr>

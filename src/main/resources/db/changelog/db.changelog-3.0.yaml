@@ -1,0 +1,28 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-users-table-liquibase
+      author: doncoffee
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: username
+                  type: VARCHAR(64)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: password
+                  type: VARCHAR(128)
+                  defaultValue: '{noop}123'
+              - column:
+                  name: role
+                  type: VARCHAR(32)
+                  defaultValue: USER
