@@ -9,27 +9,28 @@ import lombok.NoArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 
+import static by.academy.util.Constants.*;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "phone_number")
+@Table(name = PHONE_NUMBER)
 public class PhoneNumber {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "phone_number_id")
+    @Column(name = PHONE_NUMBER_ID)
     private Long id;
 
     @Column
     private String number;
 
     @Builder.Default
-    @OneToMany(mappedBy = "phoneNumber", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = PHONE_NUMBER1, cascade = CascadeType.ALL)
     private List<Store> stores = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "phoneNumber", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = PHONE_NUMBER1, cascade = CascadeType.ALL)
     private List<Supplier> suppliers = new ArrayList<>();
 }

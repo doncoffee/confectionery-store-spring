@@ -8,30 +8,32 @@ import lombok.Builder;
 import lombok.Setter;
 import lombok.Value;
 
+import static by.academy.util.Constants.*;
+
 @Value
 @Setter
 @Builder
 public class ChocolateDTO {
     Long id;
 
-    @DecimalMin(value = "0.01", message = "Price must be greater than 0")
-    @NotNull(message = "Price must not be blank")
+    @DecimalMin(value = DECIMAL_MIN, message = PRICE_MUST_BE_GREATER_THAN_0)
+    @NotNull(message = PRICE_MUST_NOT_BE_BLANK)
     Double price;
 
-    @NotBlank(message = "Type must not be blank")
-    @Size(min = 3, max = 100, message = "Type size must be between {min} and {max}")
+    @NotBlank(message = TYPE_MUST_NOT_BE_BLANK)
+    @Size(min = 3, max = 100, message = TYPE_SIZE_MUST_BE_BETWEEN_MIN_AND_MAX)
     String type;
 
-    @DecimalMin(value = "0.01", message = "Weight must be greater than 0")
-    @NotNull(message = "Weight must not be blank")
+    @DecimalMin(value = DECIMAL_MIN, message = WEIGHT_MUST_BE_GREATER_THAN_0)
+    @NotNull(message = WEIGHT_MUST_NOT_BE_BLANK)
     Double weight;
 
     Long brandId;
 
     String brandName;
 
-    @NotBlank(message = "Composition must not be blank")
-    @Size(min = 3, max = 255, message = "Composition size must be between {min} and {max}")
+    @NotBlank(message = COMPOSITION_MUST_NOT_BE_BLANK)
+    @Size(min = 3, max = 255, message = COMPOSITION_SIZE_MUST_BE_BETWEEN_MIN_AND_MAX)
     String composition;
 
     Long storeId;

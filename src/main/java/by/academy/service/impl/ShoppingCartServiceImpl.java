@@ -14,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+import static by.academy.util.Constants.*;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -39,11 +41,11 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         if (optionalCart.isPresent()) {
             ShoppingCart cart = optionalCart.get();
             Chocolate chocolate = chocolateRepository.findById(chocolateId)
-                    .orElseThrow(() -> new EntityNotFoundException("Chocolate not found"));
+                    .orElseThrow(() -> new EntityNotFoundException(CHOCOLATE_NOT_FOUND));
             cart.addChocolate(chocolate, quantity);
             shoppingCartRepository.save(cart);
         } else {
-            throw new EntityNotFoundException("ShoppingCart not found");
+            throw new EntityNotFoundException(SHOPPING_CART_NOT_FOUND);
         }
     }
 
@@ -53,11 +55,11 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         if (optionalCart.isPresent()) {
             ShoppingCart cart = optionalCart.get();
             Cookie cookie = cookieRepository.findById(cookieId)
-                    .orElseThrow(() -> new EntityNotFoundException("Cookie not found"));
+                    .orElseThrow(() -> new EntityNotFoundException(COOKIE_NOT_FOUND));
             cart.addCookie(cookie, quantity);
             shoppingCartRepository.save(cart);
         } else {
-            throw new EntityNotFoundException("ShoppingCart not found");
+            throw new EntityNotFoundException(SHOPPING_CART_NOT_FOUND);
         }
     }
 
@@ -67,11 +69,11 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         if (optionalCart.isPresent()) {
             ShoppingCart cart = optionalCart.get();
             Sweets sweets = sweetsRepository.findById(sweetsId)
-                    .orElseThrow(() -> new EntityNotFoundException("Sweets not found"));
+                    .orElseThrow(() -> new EntityNotFoundException(SWEETS_NOT_FOUND));
             cart.addSweets(sweets, quantity);
             shoppingCartRepository.save(cart);
         } else {
-            throw new EntityNotFoundException("ShoppingCart not found");
+            throw new EntityNotFoundException(SHOPPING_CART_NOT_FOUND);
         }
     }
 
@@ -83,7 +85,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
             cart.updateItemQuantity(cartItemId, quantity);
             shoppingCartRepository.save(cart);
         } else {
-            throw new EntityNotFoundException("ShoppingCart not found");
+            throw new EntityNotFoundException(SHOPPING_CART_NOT_FOUND);
         }
     }
 
@@ -95,7 +97,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
             cart.removeItem(cartItemId);
             shoppingCartRepository.save(cart);
         } else {
-            throw new EntityNotFoundException("ShoppingCart not found");
+            throw new EntityNotFoundException(SHOPPING_CART_NOT_FOUND);
         }
     }
 
@@ -107,7 +109,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
             cart.clear();
             shoppingCartRepository.save(cart);
         } else {
-            throw new EntityNotFoundException("ShoppingCart not found");
+            throw new EntityNotFoundException(SHOPPING_CART_NOT_FOUND);
         }
     }
 

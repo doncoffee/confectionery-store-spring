@@ -84,7 +84,7 @@
                     </div>
                 </form>
             </div>
-            <div>
+            <div th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
                 <form th:action="@{/api/addresses/add_address}" method="get">
                     <input type="hidden" name="page" th:value="${page}">
                     <input type="hidden" name="size" th:value="${size}">
@@ -94,8 +94,8 @@
             </div>
         </th:block>
         <th:block th:unless="${#lists.size(addresses.content) > 0}">
-            <div>
-                <h2 class="catalog-name">There are no addresses yet!</h2>
+            <h2 class="catalog-name">There are no addresses yet!</h2>
+            <div th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
                 <form th:action="@{/api/addresses/add_address}" method="get">
                     <input type="hidden" name="page" th:value="${page}">
                     <input type="hidden" name="size" th:value="${size}">

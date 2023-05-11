@@ -8,12 +8,15 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
+import static by.academy.util.Constants.BIRTH_DATE;
+import static by.academy.util.Constants.USERS;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "users")
+@Table(name = USERS)
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,7 +34,7 @@ public class User {
     @Column
     private String lastname;
 
-    @Column(name = "birth_date")
+    @Column(name = BIRTH_DATE)
     private LocalDate birthDate;
 
     @Enumerated(EnumType.STRING)

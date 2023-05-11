@@ -9,17 +9,18 @@ import lombok.NoArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 
+import static by.academy.util.Constants.*;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "chocolate")
+@Table(name = CHOCOLATE)
 public class Chocolate {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "chocolate_id")
+    @Column(name = CHOCOLATE_ID)
     private Long id;
 
     @Column
@@ -32,20 +33,20 @@ public class Chocolate {
     private Double weight;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "brand_id")
+    @JoinColumn(name = BRAND_ID)
     private Brand brand;
 
     @Column
     private String composition;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "store_id")
+    @JoinColumn(name = STORE_ID)
     private Store store;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "supplier_id")
+    @JoinColumn(name = SUPPLIER_ID)
     private Supplier supplier;
 
-    @OneToMany(mappedBy = "chocolate", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = CHOCOLATE, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CartItem> cartItems = new ArrayList<>();
 }

@@ -20,11 +20,12 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Objects;
 
+import static by.academy.util.Constants.*;
+
 @Controller
-@RequestMapping("/api/chocolates")
+@RequestMapping(API_CHOCOLATES)
 @RequiredArgsConstructor
 public class ChocolateController {
-
     private final ChocolateService chocolateService;
     private final BrandService brandService;
     private final StoreService storeService;
@@ -33,114 +34,114 @@ public class ChocolateController {
     @GetMapping
     public String findAll(Model model,
                           @PageableDefault(size = 3) Pageable pageable,
-                          @RequestParam(value = "search", required = false) String search) {
+                          @RequestParam(value = SEARCH, required = false) String search) {
         Page<ChocolateDTO> chocolateDTOPage =
                 chocolateService.findAllChocolates(search, pageable);
-        model.addAttribute("chocolates", chocolateDTOPage);
-        model.addAttribute("page", pageable.getPageNumber());
-        model.addAttribute("size", pageable.getPageSize());
-        model.addAttribute("search", search);
-        return "chocolate/chocolates";
+        model.addAttribute(CHOCOLATES, chocolateDTOPage);
+        model.addAttribute(PAGE, pageable.getPageNumber());
+        model.addAttribute(SIZE, pageable.getPageSize());
+        model.addAttribute(SEARCH, search);
+        return CHOCOLATE_CHOCOLATES;
     }
 
-    @PostMapping("/add_chocolate")
+    @PostMapping(ADD_CHOCOLATE)
     public String create(@ModelAttribute @Validated ChocolateDTO chocolateDTO,
                          BindingResult bindingResult,
                          Model model,
-                         @RequestParam("page") Integer page,
-                         @RequestParam("size") Integer size,
-                         @RequestParam(value = "search", required = false) String search) {
-        Objects.requireNonNull(page, "Page parameter must not be null");
-        Objects.requireNonNull(size, "Size parameter must not be null");
+                         @RequestParam(PAGE) Integer page,
+                         @RequestParam(SIZE) Integer size,
+                         @RequestParam(value = SEARCH, required = false) String search) {
+        Objects.requireNonNull(page, PAGE_PARAMETER_MUST_NOT_BE_NULL);
+        Objects.requireNonNull(size, SIZE_PARAMETER_MUST_NOT_BE_NULL);
         if (bindingResult.hasErrors()) {
-            model.addAttribute("errors", bindingResult.getAllErrors());
-            model.addAttribute("brands", brandService.findAllBrands());
-            model.addAttribute("stores", storeService.findAllStores());
-            model.addAttribute("suppliers", supplierService.findAllSuppliers());
-            model.addAttribute("page", page);
-            model.addAttribute("size", size);
-            model.addAttribute("search", search);
-            return "chocolate/add-chocolate";
+            model.addAttribute(ERRORS, bindingResult.getAllErrors());
+            model.addAttribute(BRANDS, brandService.findAllBrands());
+            model.addAttribute(STORES, storeService.findAllStores());
+            model.addAttribute(SUPPLIERS, supplierService.findAllSuppliers());
+            model.addAttribute(PAGE, page);
+            model.addAttribute(SIZE, size);
+            model.addAttribute(SEARCH, search);
+            return CHOCOLATE_ADD_CHOCOLATE;
         } else {
             chocolateService.createChocolate(chocolateDTO);
-            return "redirect:/api/chocolates?page=" + page + "&size=" + size + "&search=" + search;
+            return REDIRECT_API_CHOCOLATES_PAGE + page + SIZE1 + size + SEARCH1 + search;
         }
     }
 
-    @PostMapping("{id}/update")
+    @PostMapping(ID_UPDATE)
     public String update(@PathVariable Long id,
                          @ModelAttribute @Validated ChocolateDTO chocolateDTO,
                          BindingResult bindingResult,
                          Model model,
-                         @RequestParam("page") Integer page,
-                         @RequestParam("size") Integer size,
-                         @RequestParam(value = "search", required = false) String search) {
-        Objects.requireNonNull(page, "Page parameter must not be null");
-        Objects.requireNonNull(size, "Size parameter must not be null");
+                         @RequestParam(PAGE) Integer page,
+                         @RequestParam(SIZE) Integer size,
+                         @RequestParam(value = SEARCH, required = false) String search) {
+        Objects.requireNonNull(page, PAGE_PARAMETER_MUST_NOT_BE_NULL);
+        Objects.requireNonNull(size, SIZE_PARAMETER_MUST_NOT_BE_NULL);
         if (bindingResult.hasErrors()) {
-            model.addAttribute("errors", bindingResult.getAllErrors());
-            model.addAttribute("chocolate", chocolateDTO);
-            model.addAttribute("brands", brandService.findAllBrands());
-            model.addAttribute("stores", storeService.findAllStores());
-            model.addAttribute("suppliers", supplierService.findAllSuppliers());
-            model.addAttribute("page", page);
-            model.addAttribute("size", size);
-            model.addAttribute("search", search);
-            return "chocolate/edit-chocolate";
+            model.addAttribute(ERRORS, bindingResult.getAllErrors());
+            model.addAttribute(CHOCOLATE, chocolateDTO);
+            model.addAttribute(BRANDS, brandService.findAllBrands());
+            model.addAttribute(STORES, storeService.findAllStores());
+            model.addAttribute(SUPPLIERS, supplierService.findAllSuppliers());
+            model.addAttribute(PAGE, page);
+            model.addAttribute(SIZE, size);
+            model.addAttribute(SEARCH, search);
+            return CHOCOLATE_EDIT_CHOCOLATE;
         } else {
             chocolateService.updateChocolate(id, chocolateDTO)
                     .orElseThrow(() -> new ResponseStatusException(
                             HttpStatus.NOT_FOUND));
-            return "redirect:/api/chocolates?page=" + page + "&size=" + size + "&search=" + search;
+            return REDIRECT_API_CHOCOLATES_PAGE + page + SIZE1 + size + SEARCH1 + search;
         }
     }
 
-    @PostMapping("{id}/delete")
+    @PostMapping(ID_DELETE)
     public String delete(@PathVariable Long id,
                          HttpServletRequest request) {
         if (!chocolateService.deleteChocolate(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
-        String referer = request.getHeader("Referer");
-        return "redirect:" + referer;
+        String referer = request.getHeader(REFERER);
+        return REDIRECT + referer;
     }
 
-    @GetMapping("/edit_chocolate/{id}")
+    @GetMapping(EDIT_CHOCOLATE_ID)
     public String goToEditPage(@PathVariable Long id,
                                Model model,
-                               @RequestParam("page") Integer page,
-                               @RequestParam("size") Integer size,
-                               @RequestParam(value = "search", required = false) String search) {
-        Objects.requireNonNull(page, "Page parameter must not be null");
-        Objects.requireNonNull(size, "Size parameter must not be null");
+                               @RequestParam(PAGE) Integer page,
+                               @RequestParam(SIZE) Integer size,
+                               @RequestParam(value = SEARCH, required = false) String search) {
+        Objects.requireNonNull(page, PAGE_PARAMETER_MUST_NOT_BE_NULL);
+        Objects.requireNonNull(size, SIZE_PARAMETER_MUST_NOT_BE_NULL);
         return chocolateService.findChocolateById(id)
                 .map(chocolateDTO -> {
-                    model.addAttribute("chocolate", chocolateDTO);
-                    model.addAttribute("brands", brandService.findAllBrands());
-                    model.addAttribute("stores", storeService.findAllStores());
-                    model.addAttribute("suppliers", supplierService.findAllSuppliers());
-                    model.addAttribute("page", page);
-                    model.addAttribute("size", size);
-                    model.addAttribute("search", search);
-                    return "chocolate/edit-chocolate";
+                    model.addAttribute(CHOCOLATE, chocolateDTO);
+                    model.addAttribute(BRANDS, brandService.findAllBrands());
+                    model.addAttribute(STORES, storeService.findAllStores());
+                    model.addAttribute(SUPPLIERS, supplierService.findAllSuppliers());
+                    model.addAttribute(PAGE, page);
+                    model.addAttribute(SIZE, size);
+                    model.addAttribute(SEARCH, search);
+                    return CHOCOLATE_EDIT_CHOCOLATE;
                 })
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND));
     }
 
-    @GetMapping("/add_chocolate")
+    @GetMapping(ADD_CHOCOLATE)
     public String goToAddPage(Model model,
-                              @RequestParam("page") Integer page,
-                              @RequestParam("size") Integer size,
-                              @RequestParam(value = "search", required = false) String search) {
-        Objects.requireNonNull(page, "Page parameter must not be null");
-        Objects.requireNonNull(size, "Size parameter must not be null");
-        model.addAttribute("brands", brandService.findAllBrands());
-        model.addAttribute("stores", storeService.findAllStores());
-        model.addAttribute("suppliers", supplierService.findAllSuppliers());
-        model.addAttribute("page", page);
-        model.addAttribute("size", size);
-        model.addAttribute("search", search);
-        return "chocolate/add-chocolate";
+                              @RequestParam(PAGE) Integer page,
+                              @RequestParam(SIZE) Integer size,
+                              @RequestParam(value = SEARCH, required = false) String search) {
+        Objects.requireNonNull(page, PAGE_PARAMETER_MUST_NOT_BE_NULL);
+        Objects.requireNonNull(size, SIZE_PARAMETER_MUST_NOT_BE_NULL);
+        model.addAttribute(BRANDS, brandService.findAllBrands());
+        model.addAttribute(STORES, storeService.findAllStores());
+        model.addAttribute(SUPPLIERS, supplierService.findAllSuppliers());
+        model.addAttribute(PAGE, page);
+        model.addAttribute(SIZE, size);
+        model.addAttribute(SEARCH, search);
+        return CHOCOLATE_ADD_CHOCOLATE;
     }
 }

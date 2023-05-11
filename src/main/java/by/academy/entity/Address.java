@@ -6,27 +6,29 @@ import lombok.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static by.academy.util.Constants.ADDRESS;
+import static by.academy.util.Constants.ADDRESS_ID;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "address")
+@Table(name = ADDRESS)
 public class Address {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "address_id")
+    @Column(name = ADDRESS_ID)
     private Long id;
 
     @Column
     private String name;
 
     @Builder.Default
-    @OneToMany(mappedBy = "address", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = ADDRESS, cascade = CascadeType.ALL)
     private List<Store> stores = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "address", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = ADDRESS, cascade = CascadeType.ALL)
     private List<Supplier> suppliers = new ArrayList<>();
 }

@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 import java.util.Optional;
 
+import static by.academy.util.Constants.FAILED_TO_RETRIEVE_USER;
+
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserDetailsService, UserService {
@@ -27,7 +29,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
                         user.getPassword(),
                         Collections.singleton(user.getRole())
                 ))
-                .orElseThrow(() -> new UsernameNotFoundException("Failed to retrieve user: " + username));
+                .orElseThrow(() -> new UsernameNotFoundException(FAILED_TO_RETRIEVE_USER + username));
     }
 
     @Override

@@ -7,27 +7,28 @@ import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Value;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
+
+import static by.academy.util.Constants.*;
 
 @Value
 @Builder
 public class UserDTO {
     Long id;
-    @NotBlank(message = "Username must not be blank")
-    @Size(min = 3, max = 64, message = "Username size must be between {min} and {max}")
+    @NotBlank(message = USERNAME_MUST_NOT_BE_BLANK)
+    @Size(min = 3, max = 64, message = USERNAME_SIZE_MUST_BE_BETWEEN_MIN_AND_MAX)
     @UniqueUsername
     String username;
     @NotBlank
     String rawPassword;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = YYYY_MM_DD)
     LocalDate birthDate;
-    @NotBlank(message = "First name must not be blank")
-    @Size(min = 3, max = 64, message = "First name size must be between {min} and {max}")
+    @NotBlank(message = FIRST_NAME_MUST_NOT_BE_BLANK)
+    @Size(min = 3, max = 64, message = FIRST_NAME_SIZE_MUST_BE_BETWEEN_MIN_AND_MAX)
     String firstname;
-    @NotBlank(message = "Last name must not be blank")
-    @Size(min = 3, max = 64, message = "Last name size must be between {min} and {max}")
+    @NotBlank(message = LAST_NAME_MUST_NOT_BE_BLANK)
+    @Size(min = 3, max = 64, message = LAST_NAME_SIZE_MUST_BE_BETWEEN_MIN_AND_MAX)
     String lastname;
     Role role;
 }

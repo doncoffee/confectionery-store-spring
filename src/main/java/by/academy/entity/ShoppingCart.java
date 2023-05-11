@@ -8,21 +8,23 @@ import lombok.NoArgsConstructor;
 
 import java.util.*;
 
+import static by.academy.util.Constants.*;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Builder
-@Table(name = "shopping_cart")
+@Table(name = SHOPPING_CART)
 public class ShoppingCart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "session_id", nullable = false)
+    @Column(name = SESSION_ID, nullable = false)
     private String sessionId;
 
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = CART, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CartItem> items = new ArrayList<>();
 
     public void addChocolate(Chocolate chocolate, Integer quantity) {
@@ -82,7 +84,7 @@ public class ShoppingCart {
             CartItem cartItem = optionalCartItem.get();
             cartItem.setQuantity(quantity);
         } else {
-            throw new EntityNotFoundException("CartItem not found");
+            throw new EntityNotFoundException(CART_ITEM_NOT_FOUND);
         }
     }
 
@@ -92,7 +94,7 @@ public class ShoppingCart {
             CartItem cartItem = optionalCartItem.get();
             items.remove(cartItem);
         } else {
-            throw new EntityNotFoundException("CartItem not found");
+            throw new EntityNotFoundException(CART_ITEM_NOT_FOUND);
         }
     }
 

@@ -20,29 +20,30 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
+import static by.academy.util.Constants.*;
+
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/user")
+@RequestMapping(USER)
 public class UserController {
-
     private final UserService userService;
 
-    @GetMapping("/registration")
+    @GetMapping(REGISTRATION)
     public String registration(Model model) {
-        model.addAttribute("roles", Role.values());
-        return "registration";
+        model.addAttribute(ROLES, Role.values());
+        return REGISTRATION1;
     }
 
-    @PostMapping("/create_user")
+    @PostMapping(CREATE_USER)
     public String createUser(@ModelAttribute @Validated UserDTO userDTO,
                              BindingResult bindingResult,
                              Model model) {
         if (bindingResult.hasErrors()) {
-            model.addAttribute("errors", bindingResult.getAllErrors());
-            return "registration";
+            model.addAttribute(ERRORS, bindingResult.getAllErrors());
+            return REGISTRATION1;
         } else {
             userService.createUser(userDTO);
-            return "login";
+            return LOGIN;
         }
     }
 
@@ -53,11 +54,11 @@ public class UserController {
         Optional<UserDTO> user = userService.findUserByUsername(username);
 
         if (user.isEmpty()) {
-            String oauth2Email = ((OAuth2AuthenticationToken) authentication).getPrincipal().getAttribute("email");
+            String oauth2Email = ((OAuth2AuthenticationToken) authentication).getPrincipal().getAttribute(EMAIL);
             user = userService.findUserByUsername(oauth2Email);
         }
 
-        model.addAttribute("user", user.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)));
-        return "user";
+        model.addAttribute(USER1, user.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)));
+        return USER1;
     }
 }

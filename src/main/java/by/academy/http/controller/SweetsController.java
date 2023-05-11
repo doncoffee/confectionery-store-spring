@@ -20,11 +20,12 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Objects;
 
+import static by.academy.util.Constants.*;
+
 @Controller
-@RequestMapping("/api/sweets")
+@RequestMapping(API_SWEETS)
 @RequiredArgsConstructor
 public class SweetsController {
-
     private final SweetsService sweetsService;
     private final BrandService brandService;
     private final StoreService storeService;
@@ -33,114 +34,114 @@ public class SweetsController {
     @GetMapping
     public String findAll(Model model,
                           @PageableDefault(size = 3) Pageable pageable,
-                          @RequestParam(value = "search", required = false) String search) {
+                          @RequestParam(value = SEARCH, required = false) String search) {
         Page<SweetsDTO> sweetsDTOPage =
                 sweetsService.findAllSweets(search, pageable);
-        model.addAttribute("sweets", sweetsDTOPage);
-        model.addAttribute("page", pageable.getPageNumber());
-        model.addAttribute("size", pageable.getPageSize());
-        model.addAttribute("search", search);
-        return "sweets/sweets";
+        model.addAttribute(SWEETS, sweetsDTOPage);
+        model.addAttribute(PAGE, pageable.getPageNumber());
+        model.addAttribute(SIZE, pageable.getPageSize());
+        model.addAttribute(SEARCH, search);
+        return SWEETS_SWEETS;
     }
 
-    @PostMapping("/add_sweets")
+    @PostMapping(ADD_SWEETS)
     public String create(@ModelAttribute @Validated SweetsDTO sweetsDTO,
                          BindingResult bindingResult,
                          Model model,
-                         @RequestParam("page") Integer page,
-                         @RequestParam("size") Integer size,
-                         @RequestParam(value = "search", required = false) String search) {
-        Objects.requireNonNull(page, "Page parameter must not be null");
-        Objects.requireNonNull(size, "Size parameter must not be null");
+                         @RequestParam(PAGE) Integer page,
+                         @RequestParam(SIZE) Integer size,
+                         @RequestParam(value = SEARCH, required = false) String search) {
+        Objects.requireNonNull(page, PAGE_PARAMETER_MUST_NOT_BE_NULL);
+        Objects.requireNonNull(size, SIZE_PARAMETER_MUST_NOT_BE_NULL);
         if (bindingResult.hasErrors()) {
-            model.addAttribute("errors", bindingResult.getAllErrors());
-            model.addAttribute("brands", brandService.findAllBrands());
-            model.addAttribute("stores", storeService.findAllStores());
-            model.addAttribute("suppliers", supplierService.findAllSuppliers());
-            model.addAttribute("page", page);
-            model.addAttribute("size", size);
-            model.addAttribute("search", search);
-            return "sweets/add-sweets";
+            model.addAttribute(ERRORS, bindingResult.getAllErrors());
+            model.addAttribute(BRANDS, brandService.findAllBrands());
+            model.addAttribute(STORES, storeService.findAllStores());
+            model.addAttribute(SUPPLIERS, supplierService.findAllSuppliers());
+            model.addAttribute(PAGE, page);
+            model.addAttribute(SIZE, size);
+            model.addAttribute(SEARCH, search);
+            return SWEETS_ADD_SWEETS;
         } else {
             sweetsService.createSweets(sweetsDTO);
-            return "redirect:/api/sweets?page=" + page + "&size=" + size + "&search=" + search;
+            return REDIRECT_API_SWEETS_PAGE + page + SIZE1 + size + SEARCH1 + search;
         }
     }
 
-    @PostMapping("{id}/update")
+    @PostMapping(ID_UPDATE)
     public String update(@PathVariable Long id,
                          @ModelAttribute @Validated SweetsDTO sweetsDTO,
                          BindingResult bindingResult,
                          Model model,
-                         @RequestParam("page") Integer page,
-                         @RequestParam("size") Integer size,
-                         @RequestParam(value = "search", required = false) String search) {
-        Objects.requireNonNull(page, "Page parameter must not be null");
-        Objects.requireNonNull(size, "Size parameter must not be null");
+                         @RequestParam(PAGE) Integer page,
+                         @RequestParam(SIZE) Integer size,
+                         @RequestParam(value = SEARCH, required = false) String search) {
+        Objects.requireNonNull(page, PAGE_PARAMETER_MUST_NOT_BE_NULL);
+        Objects.requireNonNull(size, SIZE_PARAMETER_MUST_NOT_BE_NULL);
         if (bindingResult.hasErrors()) {
-            model.addAttribute("errors", bindingResult.getAllErrors());
-            model.addAttribute("sweets", sweetsDTO);
-            model.addAttribute("brands", brandService.findAllBrands());
-            model.addAttribute("stores", storeService.findAllStores());
-            model.addAttribute("suppliers", supplierService.findAllSuppliers());
-            model.addAttribute("page", page);
-            model.addAttribute("size", size);
-            model.addAttribute("search", search);
-            return "sweets/edit-sweets";
+            model.addAttribute(ERRORS, bindingResult.getAllErrors());
+            model.addAttribute(SWEETS, sweetsDTO);
+            model.addAttribute(BRANDS, brandService.findAllBrands());
+            model.addAttribute(STORES, storeService.findAllStores());
+            model.addAttribute(SUPPLIERS, supplierService.findAllSuppliers());
+            model.addAttribute(PAGE, page);
+            model.addAttribute(SIZE, size);
+            model.addAttribute(SEARCH, search);
+            return SWEETS_EDIT_SWEETS;
         } else {
             sweetsService.updateSweets(id, sweetsDTO)
                     .orElseThrow(() -> new ResponseStatusException(
                             HttpStatus.NOT_FOUND));
-            return "redirect:/api/sweets?page=" + page + "&size=" + size + "&search=" + search;
+            return REDIRECT_API_SWEETS_PAGE + page + SIZE1 + size + SEARCH1 + search;
         }
     }
 
-    @PostMapping("{id}/delete")
+    @PostMapping(ID_DELETE)
     public String delete(@PathVariable Long id,
                          HttpServletRequest request) {
         if (!sweetsService.deleteSweets(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
-        String referer = request.getHeader("Referer");
-        return "redirect:" + referer;
+        String referer = request.getHeader(REFERER);
+        return REDIRECT + referer;
     }
 
-    @GetMapping("/edit_sweets/{id}")
+    @GetMapping(EDIT_SWEETS_ID)
     public String goToEditPage(@PathVariable Long id,
                                Model model,
-                               @RequestParam("page") Integer page,
-                               @RequestParam("size") Integer size,
-                               @RequestParam(value = "search", required = false) String search) {
-        Objects.requireNonNull(page, "Page parameter must not be null");
-        Objects.requireNonNull(size, "Size parameter must not be null");
+                               @RequestParam(PAGE) Integer page,
+                               @RequestParam(SIZE) Integer size,
+                               @RequestParam(value = SEARCH, required = false) String search) {
+        Objects.requireNonNull(page, PAGE_PARAMETER_MUST_NOT_BE_NULL);
+        Objects.requireNonNull(size, SIZE_PARAMETER_MUST_NOT_BE_NULL);
         return sweetsService.findSweetsById(id)
                 .map(sweetsDTO -> {
-                    model.addAttribute("sweets", sweetsDTO);
-                    model.addAttribute("brands", brandService.findAllBrands());
-                    model.addAttribute("stores", storeService.findAllStores());
-                    model.addAttribute("suppliers", supplierService.findAllSuppliers());
-                    model.addAttribute("page", page);
-                    model.addAttribute("size", size);
-                    model.addAttribute("search", search);
-                    return "sweets/edit-sweets";
+                    model.addAttribute(SWEETS, sweetsDTO);
+                    model.addAttribute(BRANDS, brandService.findAllBrands());
+                    model.addAttribute(STORES, storeService.findAllStores());
+                    model.addAttribute(SUPPLIERS, supplierService.findAllSuppliers());
+                    model.addAttribute(PAGE, page);
+                    model.addAttribute(SIZE, size);
+                    model.addAttribute(SEARCH, search);
+                    return SWEETS_EDIT_SWEETS;
                 })
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND));
     }
 
-    @GetMapping("/add_sweets")
+    @GetMapping(ADD_SWEETS)
     public String goToAddPage(Model model,
-                              @RequestParam("page") Integer page,
-                              @RequestParam("size") Integer size,
-                              @RequestParam(value = "search", required = false) String search) {
-        Objects.requireNonNull(page, "Page parameter must not be null");
-        Objects.requireNonNull(size, "Size parameter must not be null");
-        model.addAttribute("brands", brandService.findAllBrands());
-        model.addAttribute("stores", storeService.findAllStores());
-        model.addAttribute("suppliers", supplierService.findAllSuppliers());
-        model.addAttribute("page", page);
-        model.addAttribute("size", size);
-        model.addAttribute("search", search);
-        return "sweets/add-sweets";
+                              @RequestParam(PAGE) Integer page,
+                              @RequestParam(SIZE) Integer size,
+                              @RequestParam(value = SEARCH, required = false) String search) {
+        Objects.requireNonNull(page, PAGE_PARAMETER_MUST_NOT_BE_NULL);
+        Objects.requireNonNull(size, SIZE_PARAMETER_MUST_NOT_BE_NULL);
+        model.addAttribute(BRANDS, brandService.findAllBrands());
+        model.addAttribute(STORES, storeService.findAllStores());
+        model.addAttribute(SUPPLIERS, supplierService.findAllSuppliers());
+        model.addAttribute(PAGE, page);
+        model.addAttribute(SIZE, size);
+        model.addAttribute(SEARCH, search);
+        return SWEETS_ADD_SWEETS;
     }
 }

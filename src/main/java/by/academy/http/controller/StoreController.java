@@ -19,11 +19,12 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Objects;
 
+import static by.academy.util.Constants.*;
+
 @Controller
-@RequestMapping("/api/stores")
+@RequestMapping(API_STORES)
 @RequiredArgsConstructor
 public class StoreController {
-
     private final StoreService storeService;
     private final AddressService addressService;
     private final PhoneNumberService phoneNumberService;
@@ -31,110 +32,110 @@ public class StoreController {
     @GetMapping
     public String findAll(Model model,
                           @PageableDefault(size = 3) Pageable pageable,
-                          @RequestParam(value = "search", required = false) String search) {
+                          @RequestParam(value = SEARCH, required = false) String search) {
         Page<StoreDTO> storeDTOPage =
                 storeService.findAllStores(search, pageable);
-        model.addAttribute("stores", storeDTOPage);
-        model.addAttribute("page", pageable.getPageNumber());
-        model.addAttribute("size", pageable.getPageSize());
-        model.addAttribute("search", search);
-        return "store/stores";
+        model.addAttribute(STORES, storeDTOPage);
+        model.addAttribute(PAGE, pageable.getPageNumber());
+        model.addAttribute(SIZE, pageable.getPageSize());
+        model.addAttribute(SEARCH, search);
+        return STORE_STORES;
     }
 
-    @PostMapping("/add_store")
+    @PostMapping(ADD_STORE)
     public String create(@ModelAttribute @Validated StoreDTO storeDTO,
                          BindingResult bindingResult,
                          Model model,
-                         @RequestParam("page") Integer page,
-                         @RequestParam("size") Integer size,
-                         @RequestParam(value = "search", required = false) String search) {
-        Objects.requireNonNull(page, "Page parameter must not be null");
-        Objects.requireNonNull(size, "Size parameter must not be null");
+                         @RequestParam(PAGE) Integer page,
+                         @RequestParam(SIZE) Integer size,
+                         @RequestParam(value = SEARCH, required = false) String search) {
+        Objects.requireNonNull(page, PAGE_PARAMETER_MUST_NOT_BE_NULL);
+        Objects.requireNonNull(size, SIZE_PARAMETER_MUST_NOT_BE_NULL);
         if (bindingResult.hasErrors()) {
-            model.addAttribute("errors", bindingResult.getAllErrors());
-            model.addAttribute("addresses", addressService.findAllAddresses());
-            model.addAttribute("phoneNumbers", phoneNumberService.findAllPhoneNumbers());
-            model.addAttribute("page", page);
-            model.addAttribute("size", size);
-            model.addAttribute("search", search);
-            return "store/add-store";
+            model.addAttribute(ERRORS, bindingResult.getAllErrors());
+            model.addAttribute(ADDRESSES, addressService.findAllAddresses());
+            model.addAttribute(PHONE_NUMBERS, phoneNumberService.findAllPhoneNumbers());
+            model.addAttribute(PAGE, page);
+            model.addAttribute(SIZE, size);
+            model.addAttribute(SEARCH, search);
+            return STORE_ADD_STORE;
         } else {
             storeService.createStore(storeDTO);
-            return "redirect:/api/stores?page=" + page + "&size=" + size + "&search=" + search;
+            return REDIRECT_API_STORES_PAGE + page + SIZE1 + size + SEARCH1 + search;
         }
     }
 
-    @PostMapping("{id}/update")
+    @PostMapping(ID_UPDATE)
     public String update(@PathVariable Long id,
                          @ModelAttribute @Validated StoreDTO storeDTO,
                          BindingResult bindingResult,
                          Model model,
-                         @RequestParam("page") Integer page,
-                         @RequestParam("size") Integer size,
-                         @RequestParam(value = "search", required = false) String search) {
-        Objects.requireNonNull(page, "Page parameter must not be null");
-        Objects.requireNonNull(size, "Size parameter must not be null");
+                         @RequestParam(PAGE) Integer page,
+                         @RequestParam(SIZE) Integer size,
+                         @RequestParam(value = SEARCH, required = false) String search) {
+        Objects.requireNonNull(page, PAGE_PARAMETER_MUST_NOT_BE_NULL);
+        Objects.requireNonNull(size, SIZE_PARAMETER_MUST_NOT_BE_NULL);
         if (bindingResult.hasErrors()) {
-            model.addAttribute("errors", bindingResult.getAllErrors());
-            model.addAttribute("store", storeDTO);
-            model.addAttribute("addresses", addressService.findAllAddresses());
-            model.addAttribute("phoneNumbers", phoneNumberService.findAllPhoneNumbers());
-            model.addAttribute("page", page);
-            model.addAttribute("size", size);
-            model.addAttribute("search", search);
-            return "store/edit-store";
+            model.addAttribute(ERRORS, bindingResult.getAllErrors());
+            model.addAttribute(STORE, storeDTO);
+            model.addAttribute(ADDRESSES, addressService.findAllAddresses());
+            model.addAttribute(PHONE_NUMBERS, phoneNumberService.findAllPhoneNumbers());
+            model.addAttribute(PAGE, page);
+            model.addAttribute(SIZE, size);
+            model.addAttribute(SEARCH, search);
+            return STORE_EDIT_STORE;
         } else {
             storeService.updateStore(id, storeDTO)
                     .orElseThrow(() -> new ResponseStatusException(
                             HttpStatus.NOT_FOUND));
-            return "redirect:/api/stores?page=" + page + "&size=" + size + "&search=" + search;
+            return REDIRECT_API_STORES_PAGE + page + SIZE1 + size + SEARCH1 + search;
         }
     }
 
-    @PostMapping("{id}/delete")
+    @PostMapping(ID_DELETE)
     public String delete(@PathVariable Long id,
                          HttpServletRequest request) {
         if (!storeService.deleteStore(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
-        String referer = request.getHeader("Referer");
-        return "redirect:" + referer;
+        String referer = request.getHeader(REFERER);
+        return REDIRECT + referer;
     }
 
-    @GetMapping("/edit_store/{id}")
+    @GetMapping(EDIT_STORE_ID)
     public String goToEditPage(@PathVariable Long id,
                                Model model,
-                               @RequestParam("page") Integer page,
-                               @RequestParam("size") Integer size,
-                               @RequestParam(value = "search", required = false) String search) {
-        Objects.requireNonNull(page, "Page parameter must not be null");
-        Objects.requireNonNull(size, "Size parameter must not be null");
+                               @RequestParam(PAGE) Integer page,
+                               @RequestParam(SIZE) Integer size,
+                               @RequestParam(value = SEARCH, required = false) String search) {
+        Objects.requireNonNull(page, PAGE_PARAMETER_MUST_NOT_BE_NULL);
+        Objects.requireNonNull(size, SIZE_PARAMETER_MUST_NOT_BE_NULL);
         return storeService.findStoreById(id)
                 .map(storeDTO -> {
-                    model.addAttribute("store", storeDTO);
-                    model.addAttribute("addresses", addressService.findAllAddresses());
-                    model.addAttribute("phoneNumbers", phoneNumberService.findAllPhoneNumbers());
-                    model.addAttribute("page", page);
-                    model.addAttribute("size", size);
-                    model.addAttribute("search", search);
-                    return "store/edit-store";
+                    model.addAttribute(STORE, storeDTO);
+                    model.addAttribute(ADDRESSES, addressService.findAllAddresses());
+                    model.addAttribute(PHONE_NUMBERS, phoneNumberService.findAllPhoneNumbers());
+                    model.addAttribute(PAGE, page);
+                    model.addAttribute(SIZE, size);
+                    model.addAttribute(SEARCH, search);
+                    return STORE_EDIT_STORE;
                 })
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND));
     }
 
-    @GetMapping("/add_store")
+    @GetMapping(ADD_STORE)
     public String goToAddPage(Model model,
-                              @RequestParam("page") Integer page,
-                              @RequestParam("size") Integer size,
-                              @RequestParam(value = "search", required = false) String search) {
-        Objects.requireNonNull(page, "Page parameter must not be null");
-        Objects.requireNonNull(size, "Size parameter must not be null");
-        model.addAttribute("addresses", addressService.findAllAddresses());
-        model.addAttribute("phoneNumbers", phoneNumberService.findAllPhoneNumbers());
-        model.addAttribute("page", page);
-        model.addAttribute("size", size);
-        model.addAttribute("search", search);
-        return "store/add-store";
+                              @RequestParam(PAGE) Integer page,
+                              @RequestParam(SIZE) Integer size,
+                              @RequestParam(value = SEARCH, required = false) String search) {
+        Objects.requireNonNull(page, PAGE_PARAMETER_MUST_NOT_BE_NULL);
+        Objects.requireNonNull(size, SIZE_PARAMETER_MUST_NOT_BE_NULL);
+        model.addAttribute(ADDRESSES, addressService.findAllAddresses());
+        model.addAttribute(PHONE_NUMBERS, phoneNumberService.findAllPhoneNumbers());
+        model.addAttribute(PAGE, page);
+        model.addAttribute(SIZE, size);
+        model.addAttribute(SEARCH, search);
+        return STORE_ADD_STORE;
     }
 }
