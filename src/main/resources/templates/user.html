@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+<div class="wrapper">
+    <div th:replace="~{fragments/header :: header}"></div>
+    <div class="main">
+        <div class="block">
+            <div class="container py-5 h-100">
+                <div class="row d-flex justify-content-center align-items-center h-100">
+                    <div class="col-md-12 col-xl-4">
+                        <div class="card" style="border-radius: 15px;">
+                            <div class="card-body text-center">
+                                <h4 class="mb-2" th:text="${user.username}">Username</h4>
+                                <p class="text-muted mb-4">Firstname <span class="mx-2">|</span> <span
+                                        th:text="${user.firstname}">firstname</span></p>
+                                <p class="text-muted mb-4">Lastname <span class="mx-2">|</span> <span
+                                        th:text="${user.lastname}">firstname</span></p>
+                                <p class="text-muted mb-4">Birth date <span class="mx-2">|</span> <span
+                                        th:text="${#temporals.format(user.birthDate, 'dd/MM/yyyy')}">BirthDate</span>
+                                </p>
+                                <a href="/logout" class="btn btn-default">Logout</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div th:replace="~{fragments/footer :: footer}"></div>
+    </div>
+</div>
+</body>
+</html>

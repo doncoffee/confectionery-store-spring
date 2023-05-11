@@ -15,7 +15,7 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name = "chocolate")
-public class Chocolate extends Product {
+public class Chocolate {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

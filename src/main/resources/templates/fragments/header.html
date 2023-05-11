@@ -7,9 +7,6 @@
 </head>
 <body>
 <div class="header" th:fragment="header">
-    <div sec:authorize="isAuthenticated()">
-        Hello, <span sec:authentication="name"></span>!
-    </div>
     <a class="active" href="/">Home</a>
     <a href="/api/chocolates">Chocolate</a>
     <a href="/api/cookies">Cookies</a>
@@ -20,8 +17,8 @@
     <a href="/api/addresses">Addresses</a>
     <a href="/api/phone_numbers">Contacts</a>
     <a href="/login">Sign in</a>
-    <a sec:authorize="isAuthenticated()" href="/logout">Logout</a>
     <a href="/api/cart">Cart</a>
+    <a sec:authorize="isAuthenticated()" href="/user">User</a>
 </div>
 </body>
 </html>

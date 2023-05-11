@@ -4,6 +4,17 @@ spring:
     username: postgres
     password: pass
     driver-class-name: org.postgresql.Driver
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            clientId: 1065294633681-2sq2pspumptdnmc3l8q5ervsmt6e7g2o.apps.googleusercontent.com
+            clientSecret: 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
+            redirectUri: http://localhost:8080/login/oauth2/code/google
+            scope: openid,email,profile
+
 #  jpa:
 #    show-sql: true
 #    properties:

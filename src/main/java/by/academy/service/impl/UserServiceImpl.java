@@ -38,4 +38,15 @@ public class UserServiceImpl implements UserDetailsService, UserService {
                 .map(userMapper::mapToDTO)
                 .orElseThrow();
     }
+
+    @Override
+    public Optional<UserDTO> findUserByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .map(userMapper::mapToDTO);
+    }
+
+    @Override
+    public boolean existsByUsername(String username) {
+        return userRepository.existsByUsername(username);
+    }
 }

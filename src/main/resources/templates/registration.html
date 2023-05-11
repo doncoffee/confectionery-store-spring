@@ -13,7 +13,7 @@
     <div class="main">
         <div class="block">
             <h2 class="catalog-name">Sign up</h2>
-            <form th:action="@{/registration/create_user}" method="post">
+            <form th:action="@{/user/create_user}" method="post">
                 <label for="username" class="input">Username:
                     <input class="input form-control" id="username" placeholder="Enter username" type="text"
                            name="username">
@@ -22,7 +22,17 @@
                     <input class="input form-control" id="rawPassword" placeholder="Enter password" type="password"
                            name="rawPassword">
                 </label>
-                    <input th:unless="${#authorization.expression('hasAuthority(''ADMIN'')')}" type="hidden" name="role" value="USER">
+                <label for="birthDate" class="input">BirthDate:
+                    <input id="birthDate" type="date" name="birthDate">
+                </label>
+                <label for="firstname" class="input">Firstname:
+                    <input class="input form-control" id="firstname" type="text" name="firstname">
+                </label>
+                <label for="lastname" class="input">Lastname:
+                    <input class="input form-control" id="lastname" type="text" name="lastname">
+                </label>
+                <input th:unless="${#authorization.expression('hasAuthority(''ADMIN'')')}" type="hidden" name="role"
+                       value="USER">
                 <div th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}" th:each="role : ${roles}">
                     <input th:id="${role}" type="radio" name="role" th:value="${role}">
                     <label th:for="${role}" th:text="${role}">Role name</label>

@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,6 +24,15 @@ public class User {
 
     @Column
     private String password;
+
+    @Column
+    private String firstname;
+
+    @Column
+    private String lastname;
+
+    @Column(name = "birth_date")
+    private LocalDate birthDate;
 
     @Enumerated(EnumType.STRING)
     @Column

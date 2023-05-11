@@ -23,6 +23,15 @@ databaseChangeLog:
                   type: VARCHAR(128)
                   defaultValue: '{noop}123'
               - column:
+                  name: birth_date
+                  type: DATE
+              - column:
+                  name: firstname
+                  type: VARCHAR(64)
+              - column:
+                  name: lastname
+                  type: VARCHAR(64)
+              - column:
                   name: role
                   type: VARCHAR(32)
                   defaultValue: USER

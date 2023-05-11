@@ -20,6 +20,9 @@ public class UserMapper implements Mapper<User, UserDTO> {
         User user = User.builder()
                 .id(object.getId())
                 .username(object.getUsername())
+                .firstname(object.getFirstname())
+                .lastname(object.getLastname())
+                .birthDate(object.getBirthDate())
                 .role(object.getRole())
                 .build();
 
@@ -27,6 +30,7 @@ public class UserMapper implements Mapper<User, UserDTO> {
                 .filter(StringUtils::hasText)
                 .map(passwordEncoder::encode)
                 .ifPresent(user::setPassword);
+
         return user;
     }
 
@@ -35,6 +39,9 @@ public class UserMapper implements Mapper<User, UserDTO> {
         return UserDTO.builder()
                 .id(object.getId())
                 .username(object.getUsername())
+                .firstname(object.getFirstname())
+                .lastname(object.getLastname())
+                .birthDate(object.getBirthDate())
                 .role(object.getRole())
                 .build();
     }

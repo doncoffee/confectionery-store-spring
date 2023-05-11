@@ -23,13 +23,20 @@
                 <div class="error-message" th:if="${param.error}">
                     Invalid username or password
                 </div>
-                <button type="submit" class="btn btn-default">Login</button>
-                <a class="btn btn-default" href="javascript:history.back()">Cancel</a>
+                <div>
+                    <button type="submit" class="btn btn-default">Login</button>
+                    <a class="btn btn-default" href="javascript:history.back()">Cancel</a>
+                </div><br>
             </form>
-            <span>Sign up if you don't have an account:</span>
-            <form action="/user/registration">
-                <button class="btn btn-default" type="submit">Sing up</button>
-            </form>
+            <div>
+                <form action="/user/registration">
+                    <button class="btn btn-default" type="submit">Sing up</button>
+                </form>
+            </div>
+            <div>
+                <div>Login with:</div>
+                <a href="/oauth2/authorization/google">Google</a>
+            </div>
         </div>
         <div th:replace="~{fragments/footer :: footer}"></div>
     </div>
