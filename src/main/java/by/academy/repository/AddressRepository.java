@@ -10,6 +10,8 @@ import org.springframework.data.repository.query.Param;
 public interface AddressRepository extends JpaRepository<Address, Long> {
 
     @Query("SELECT a FROM Address a WHERE " +
-            "LOWER(a.name) LIKE LOWER(CONCAT('%', :search, '%'))")
+            "LOWER(a.name) LIKE LOWER(CONCAT('%', :search, '%'))" +
+            "GROUP BY a.id ORDER BY a.id")
     Page<Address> findAllBySearchAndPage(@Param("search") String search, Pageable pageable);
+    Page<Address> findAllByOrderById(Pageable pageable);
 }

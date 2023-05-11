@@ -16,6 +16,8 @@ public interface SweetsRepository extends JpaRepository<Sweets, Long> {
             "LOWER(s.brand.name) LIKE LOWER(CONCAT('%', :search, '%')) OR " +
             "LOWER(s.composition) LIKE LOWER(CONCAT('%', :search, '%')) OR " +
             "LOWER(s.store.address.name) LIKE LOWER(CONCAT('%', :search, '%')) OR " +
-            "LOWER(s.supplier.name) LIKE LOWER(CONCAT('%', :search, '%'))")
+            "LOWER(s.supplier.name) LIKE LOWER(CONCAT('%', :search, '%'))" +
+            "GROUP BY s.id ORDER BY s.id")
     Page<Sweets> findAllBySearchAndPage(@Param("search") String search, Pageable pageable);
+    Page<Sweets> findAllByOrderById(Pageable pageable);
 }

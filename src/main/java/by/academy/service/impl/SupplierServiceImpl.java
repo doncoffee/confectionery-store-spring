@@ -33,7 +33,7 @@ public class SupplierServiceImpl implements SupplierService {
     @Override
     public Page<SupplierDTO> findAllSuppliers(String search, Pageable pageable) {
         return (search == null) ?
-                supplierRepository.findAll(pageable)
+                supplierRepository.findAllByOrderById(pageable)
                         .map(supplierMapper::mapToDTO) :
                 supplierRepository.findAllBySearchAndPage(search, pageable)
                         .map(supplierMapper::mapToDTO);

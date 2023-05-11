@@ -9,7 +9,7 @@
 </head>
 <body>
 <div class="wrapper">
-    <div th:replace="fragments/header :: header"></div>
+    <div th:replace="~{fragments/header :: header}"></div>
     <div class="catalog-name">
         <h1>Stores</h1>
     </div>
@@ -28,7 +28,7 @@
                     <th>№</th>
                     <th>Address</th>
                     <th>Contact</th>
-                    <th colspan="2" class="centered">Action</th>
+                    <th th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}" colspan="2" class="centered">Action</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -36,7 +36,7 @@
                     <td th:text="${storeStat.index + stores.pageable.offset + 1}"></td>
                     <td th:text="${store.addressName}"></td>
                     <td th:text="${store.phoneNumberNumber}"></td>
-                    <td>
+                    <td th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
                         <form th:action="@{/api/stores/edit_store/{id}(id=${store.id})}" method="get">
                             <input type="hidden" name="page" th:value="${page}">
                             <input type="hidden" name="size" th:value="${size}">
@@ -44,7 +44,7 @@
                             <button class="button btn btn-default" type="submit">EDIT</button>
                         </form>
                     </td>
-                    <td>
+                    <td th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
                         <form th:action="@{/api/stores/{id}/delete(id=${store.id})}" method="post">
                             <input type="hidden" name="page" th:value="${stores.number}">
                             <input type="hidden" name="size" th:value="${stores.size}">
@@ -85,7 +85,7 @@
                     </div>
                 </form>
             </div>
-            <div>
+            <div th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
                 <form th:action="@{/api/stores/add_store}" method="get">
                     <input type="hidden" name="page" th:value="${page}">
                     <input type="hidden" name="size" th:value="${size}">
@@ -95,8 +95,8 @@
             </div>
         </th:block>
         <th:block th:unless="${#lists.size(stores.content) > 0}">
-            <div>
-                <h2 class="catalog-name">There are no stores yet!</h2>
+            <h2 class="catalog-name">There are no stores yet!</h2>
+            <div th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
                 <form th:action="@{/api/stores/add_store}" method="get">
                     <input type="hidden" name="page" th:value="${page}">
                     <input type="hidden" name="size" th:value="${size}">
@@ -105,7 +105,7 @@
                 </form>
             </div>
         </th:block>
-        <div th:replace="fragments/footer :: footer"></div>
+        <div th:replace="~{fragments/footer :: footer}"></div>
     </div>
 </div>
 </body>

@@ -16,6 +16,8 @@ public interface CookieRepository extends JpaRepository<Cookie, Long> {
             "LOWER(c.brand.name) LIKE LOWER(CONCAT('%', :search, '%')) OR " +
             "LOWER(c.composition) LIKE LOWER(CONCAT('%', :search, '%')) OR " +
             "LOWER(c.store.address.name) LIKE LOWER(CONCAT('%', :search, '%')) OR " +
-            "LOWER(c.supplier.name) LIKE LOWER(CONCAT('%', :search, '%'))")
+            "LOWER(c.supplier.name) LIKE LOWER(CONCAT('%', :search, '%'))" +
+            "GROUP BY c.id ORDER BY c.id")
     Page<Cookie> findAllBySearchAndPage(@Param("search") String search, Pageable pageable);
+    Page<Cookie> findAllByOrderById(Pageable pageable);
 }

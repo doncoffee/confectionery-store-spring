@@ -1,0 +1,87 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-shopping_cart-table-liquibase
+      author: doncoffee
+      changes:
+        - createTable:
+            tableName: shopping_cart
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: session_id
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: create-cart_item-table-liquibase
+      author: doncoffee
+      changes:
+        - createTable:
+            tableName: cart_item
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: chocolate_id
+                  type: BIGINT
+                  constraints:
+                    nullable: true
+                    foreignKeyName: fk_chocolate_cart_item
+                    referencedTableName: chocolate
+                    referencedColumnNames: chocolate_id
+              - column:
+                  name: cookie_id
+                  type: BIGINT
+                  constraints:
+                    nullable: true
+                    foreignKeyName: fk_cookie_cart_item
+                    referencedTableName: cookie
+                    referencedColumnNames: cookie_id
+              - column:
+                  name: sweets_id
+                  type: BIGINT
+                  constraints:
+                    nullable: true
+                    foreignKeyName: fk_sweets_cart_item
+                    referencedTableName: sweets
+                    referencedColumnNames: sweets_id
+              - column:
+                  name: quantity
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+              - column:
+                  name: cart_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_cart_cart_item
+                    referencedTableName: shopping_cart
+                    referencedColumnNames: id
+
+  - changeSet:
+      id: insert-admin-liquibase
+      author: doncoffee
+      changes:
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: username
+                  value: admin
+              - column:
+                  name: password
+                  value: '{bcrypt}$2a$12$YjIPgLvTGUgOXwz3CS/qc.sztvjF3P1jFg5CCegtGulXSkjo2B5wy'
+              - column:
+                  name: role
+                  value: ADMIN

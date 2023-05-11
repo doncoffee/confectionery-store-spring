@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -16,6 +16,9 @@
     <a href="/api/suppliers">Suppliers</a>
     <a href="/api/addresses">Addresses</a>
     <a href="/api/phone_numbers">Contacts</a>
+    <a href="/login">Sign in</a>
+    <a href="/api/cart">Cart</a>
+    <a sec:authorize="isAuthenticated()" href="/user">User</a>
 </div>
 </body>
 </html>

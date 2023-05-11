@@ -9,7 +9,7 @@
 </head>
 <body>
 <div class="wrapper">
-    <div th:replace="fragments/header :: header"></div>
+    <div th:replace="~{fragments/header :: header}"></div>
     <div class="catalog-name">
         <h1>Suppliers</h1>
     </div>
@@ -30,7 +30,7 @@
                     <th>Contact person</th>
                     <th>Address</th>
                     <th>Contact</th>
-                    <th colspan="2">Action</th>
+                    <th th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}" colspan="2">Action</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -40,7 +40,7 @@
                     <td th:text="${supplier.contactPerson}"></td>
                     <td th:text="${supplier.addressName}"></td>
                     <td th:text="${supplier.phoneNumberNumber}"></td>
-                    <td>
+                    <td th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
                         <form th:action="@{/api/suppliers/edit_supplier/{id}(id=${supplier.id})}" method="get">
                             <input type="hidden" name="page" th:value="${page}">
                             <input type="hidden" name="size" th:value="${size}">
@@ -48,7 +48,7 @@
                             <button class="button btn btn-default" type="submit">EDIT</button>
                         </form>
                     </td>
-                    <td>
+                    <td th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
                         <form th:action="@{/api/suppliers/{id}/delete(id=${supplier.id})}" method="post">
                             <input type="hidden" name="page" th:value="${suppliers.number}">
                             <input type="hidden" name="size" th:value="${suppliers.size}">
@@ -89,7 +89,7 @@
                     </div>
                 </form>
             </div>
-            <div>
+            <div th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
                 <form th:action="@{/api/suppliers/add_supplier}" method="get">
                     <input type="hidden" name="page" th:value="${page}">
                     <input type="hidden" name="size" th:value="${size}">
@@ -99,8 +99,8 @@
             </div>
         </th:block>
         <th:block th:unless="${#lists.size(suppliers.content) > 0}">
-            <div>
-                <h2 class="catalog-name">There are no suppliers yet!</h2>
+            <h2 class="catalog-name">There are no suppliers yet!</h2>
+            <div th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
                 <form th:action="@{/api/suppliers/add_supplier}" method="get">
                     <input type="hidden" name="page" th:value="${page}">
                     <input type="hidden" name="size" th:value="${size}">
@@ -109,7 +109,7 @@
                 </form>
             </div>
         </th:block>
-        <div th:replace="fragments/footer :: footer"></div>
+        <div th:replace="~{fragments/footer :: footer}"></div>
     </div>
 </div>
 </body>

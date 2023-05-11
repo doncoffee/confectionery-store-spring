@@ -33,7 +33,7 @@ public class ChocolateServiceImpl implements ChocolateService {
     @Override
     public Page<ChocolateDTO> findAllChocolates(String search, Pageable pageable) {
         return (search == null) ?
-                chocolateRepository.findAll(pageable)
+                chocolateRepository.findAllByOrderById(pageable)
                         .map(chocolateMapper::mapToDTO) :
                 chocolateRepository.findAllBySearchAndPage(search, pageable)
                         .map(chocolateMapper::mapToDTO);

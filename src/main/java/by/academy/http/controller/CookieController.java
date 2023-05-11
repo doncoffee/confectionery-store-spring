@@ -13,16 +13,19 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Objects;
 
+import static by.academy.util.Constants.*;
+
 @Controller
-@RequestMapping("/api/cookies")
+@RequestMapping(API_COOKIES)
 @RequiredArgsConstructor
 public class CookieController {
-
     private final CookieService cookieService;
     private final BrandService brandService;
     private final StoreService storeService;
@@ -31,86 +34,113 @@ public class CookieController {
     @GetMapping
     public String findAll(Model model,
                           @PageableDefault(size = 3) Pageable pageable,
-                          @RequestParam(value = "search", required = false) String search) {
+                          @RequestParam(value = SEARCH, required = false) String search) {
         Page<CookieDTO> cookieDTOPage =
                 cookieService.findAllCookies(search, pageable);
-        model.addAttribute("cookies", cookieDTOPage);
-        model.addAttribute("page", pageable.getPageNumber());
-        model.addAttribute("size", pageable.getPageSize());
-        model.addAttribute("search", search);
-        return "cookie/cookies";
+        model.addAttribute(COOKIES, cookieDTOPage);
+        model.addAttribute(PAGE, pageable.getPageNumber());
+        model.addAttribute(SIZE, pageable.getPageSize());
+        model.addAttribute(SEARCH, search);
+        return COOKIE_COOKIES;
     }
 
-    @PostMapping("/add_cookie")
-    public String create(@ModelAttribute CookieDTO cookieDTO,
-                         @RequestParam("page") Integer page,
-                         @RequestParam("size") Integer size,
-                         @RequestParam(value = "search", required = false) String search) {
-        Objects.requireNonNull(page, "Page parameter must not be null");
-        Objects.requireNonNull(size, "Size parameter must not be null");
-        cookieService.createCookie(cookieDTO);
-        return "redirect:/api/cookies?page=" + page + "&size=" + size + "&search=" + search;
+    @PostMapping(ADD_COOKIE)
+    public String create(@ModelAttribute @Validated CookieDTO cookieDTO,
+                         BindingResult bindingResult,
+                         Model model,
+                         @RequestParam(PAGE) Integer page,
+                         @RequestParam(SIZE) Integer size,
+                         @RequestParam(value = SEARCH, required = false) String search) {
+        Objects.requireNonNull(page, PAGE_PARAMETER_MUST_NOT_BE_NULL);
+        Objects.requireNonNull(size, SIZE_PARAMETER_MUST_NOT_BE_NULL);
+        if (bindingResult.hasErrors()) {
+            model.addAttribute(ERRORS, bindingResult.getAllErrors());
+            model.addAttribute(BRANDS, brandService.findAllBrands());
+            model.addAttribute(STORES, storeService.findAllStores());
+            model.addAttribute(SUPPLIERS, supplierService.findAllSuppliers());
+            model.addAttribute(PAGE, page);
+            model.addAttribute(SIZE, size);
+            model.addAttribute(SEARCH, search);
+            return COOKIE_ADD_COOKIE;
+        } else {
+            cookieService.createCookie(cookieDTO);
+            return REDIRECT_API_COOKIES_PAGE + page + SIZE1 + size + SEARCH1 + search;
+        }
     }
 
-    @PostMapping("{id}/update")
+    @PostMapping(ID_UPDATE)
     public String update(@PathVariable Long id,
-                         @ModelAttribute CookieDTO cookieDTO,
-                         @RequestParam("page") Integer page,
-                         @RequestParam("size") Integer size,
-                         @RequestParam(value = "search", required = false) String search) {
-        Objects.requireNonNull(page, "Page parameter must not be null");
-        Objects.requireNonNull(size, "Size parameter must not be null");
-        cookieService.updateCookie(id, cookieDTO)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        return "redirect:/api/cookies?page=" + page + "&size=" + size + "&search=" + search;
+                         @ModelAttribute @Validated CookieDTO cookieDTO,
+                         BindingResult bindingResult,
+                         Model model,
+                         @RequestParam(PAGE) Integer page,
+                         @RequestParam(SIZE) Integer size,
+                         @RequestParam(value = SEARCH, required = false) String search) {
+        Objects.requireNonNull(page, PAGE_PARAMETER_MUST_NOT_BE_NULL);
+        Objects.requireNonNull(size, SIZE_PARAMETER_MUST_NOT_BE_NULL);
+        if (bindingResult.hasErrors()) {
+            model.addAttribute(ERRORS, bindingResult.getAllErrors());
+            model.addAttribute(COOKIE, cookieDTO);
+            model.addAttribute(BRANDS, brandService.findAllBrands());
+            model.addAttribute(STORES, storeService.findAllStores());
+            model.addAttribute(SUPPLIERS, supplierService.findAllSuppliers());
+            model.addAttribute(PAGE, page);
+            model.addAttribute(SIZE, size);
+            model.addAttribute(SEARCH, search);
+            return COOKIE_EDIT_COOKIE;
+        } else {
+            cookieService.updateCookie(id, cookieDTO)
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+            return REDIRECT_API_COOKIES_PAGE + page + SIZE1 + size + SEARCH1 + search;
+        }
     }
 
-    @PostMapping("{id}/delete")
+    @PostMapping(ID_DELETE)
     public String delete(@PathVariable Long id,
                          HttpServletRequest request) {
         if (!cookieService.deleteCookie(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
-        String referer = request.getHeader("Referer");
-        return "redirect:" + referer;
+        String referer = request.getHeader(REFERER);
+        return REDIRECT + referer;
     }
 
-    @GetMapping("/edit_cookie/{id}")
+    @GetMapping(EDIT_COOKIE_ID)
     public String goToEditPage(@PathVariable Long id,
                                Model model,
-                               @RequestParam("page") Integer page,
-                               @RequestParam("size") Integer size,
-                               @RequestParam(value = "search", required = false) String search) {
-        Objects.requireNonNull(page, "Page parameter must not be null");
-        Objects.requireNonNull(size, "Size parameter must not be null");
+                               @RequestParam(PAGE) Integer page,
+                               @RequestParam(SIZE) Integer size,
+                               @RequestParam(value = SEARCH, required = false) String search) {
+        Objects.requireNonNull(page, PAGE_PARAMETER_MUST_NOT_BE_NULL);
+        Objects.requireNonNull(size, SIZE_PARAMETER_MUST_NOT_BE_NULL);
         return cookieService.findCookieById(id)
                 .map(cookieDTO -> {
-                    model.addAttribute("cookie", cookieDTO);
-                    model.addAttribute("brands", brandService.findAllBrands());
-                    model.addAttribute("stores", storeService.findAllStores());
-                    model.addAttribute("suppliers", supplierService.findAllSuppliers());
-                    model.addAttribute("page", page);
-                    model.addAttribute("size", size);
-                    model.addAttribute("search", search);
-                    return "cookie/edit-cookie";
+                    model.addAttribute(COOKIE, cookieDTO);
+                    model.addAttribute(BRANDS, brandService.findAllBrands());
+                    model.addAttribute(STORES, storeService.findAllStores());
+                    model.addAttribute(SUPPLIERS, supplierService.findAllSuppliers());
+                    model.addAttribute(PAGE, page);
+                    model.addAttribute(SIZE, size);
+                    model.addAttribute(SEARCH, search);
+                    return COOKIE_EDIT_COOKIE;
                 })
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND));
     }
 
-    @GetMapping("/add_cookie")
+    @GetMapping(ADD_COOKIE)
     public String goToAddPage(Model model,
-                              @RequestParam("page") Integer page,
-                              @RequestParam("size") Integer size,
-                              @RequestParam(value = "search", required = false) String search) {
-        Objects.requireNonNull(page, "Page parameter must not be null");
-        Objects.requireNonNull(size, "Size parameter must not be null");
-        model.addAttribute("brands", brandService.findAllBrands());
-        model.addAttribute("stores", storeService.findAllStores());
-        model.addAttribute("suppliers", supplierService.findAllSuppliers());
-        model.addAttribute("page", page);
-        model.addAttribute("size", size);
-        model.addAttribute("search", search);
-        return "cookie/add-cookie";
+                              @RequestParam(PAGE) Integer page,
+                              @RequestParam(SIZE) Integer size,
+                              @RequestParam(value = SEARCH, required = false) String search) {
+        Objects.requireNonNull(page, PAGE_PARAMETER_MUST_NOT_BE_NULL);
+        Objects.requireNonNull(size, SIZE_PARAMETER_MUST_NOT_BE_NULL);
+        model.addAttribute(BRANDS, brandService.findAllBrands());
+        model.addAttribute(STORES, storeService.findAllStores());
+        model.addAttribute(SUPPLIERS, supplierService.findAllSuppliers());
+        model.addAttribute(PAGE, page);
+        model.addAttribute(SIZE, size);
+        model.addAttribute(SEARCH, search);
+        return COOKIE_ADD_COOKIE;
     }
 }

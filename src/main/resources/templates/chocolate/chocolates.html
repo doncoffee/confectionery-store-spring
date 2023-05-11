@@ -9,7 +9,7 @@
 </head>
 <body>
 <div class="wrapper">
-    <div th:replace="fragments/header :: header"></div>
+    <div th:replace="~{fragments/header :: header}"></div>
     <div class="catalog-name">
         <h1>Chocolates</h1>
     </div>
@@ -33,7 +33,8 @@
                     <th>Brand</th>
                     <th>Store</th>
                     <th>Supplier</th>
-                    <th colspan="2">Action</th>
+                    <th th:unless="${#authorization.expression('hasAuthority(''ADMIN'')')}" colspan="2">Action</th>
+                    <th th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}" colspan="3">Action</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -46,7 +47,7 @@
                     <td th:text="${chocolate.brandName}"></td>
                     <td th:text="${chocolate.storeName}"></td>
                     <td th:text="${chocolate.supplierName}"></td>
-                    <td>
+                    <td th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
                         <form th:action="@{/api/chocolates/edit_chocolate/{id}(id=${chocolate.id})}" method="get">
                             <input type="hidden" name="page" th:value="${page}">
                             <input type="hidden" name="size" th:value="${size}">
@@ -54,12 +55,19 @@
                             <button class="button btn btn-default" type="submit">EDIT</button>
                         </form>
                     </td>
-                    <td>
+                    <td th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
                         <form th:action="@{/api/chocolates/{id}/delete(id=${chocolate.id})}" method="post">
                             <input type="hidden" name="page" th:value="${chocolates.number}">
                             <input type="hidden" name="size" th:value="${chocolates.size}">
                             <input type="hidden" name="search" th:value="${search}">
                             <button class="button btn btn-default" type="submit">DELETE</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form th:action="@{/api/cart/{chocolateId}/add_chocolate_to_cart(chocolateId=${chocolate.id})}" method="post">
+                            <input type="hidden" name="chocolateId" th:value="${chocolate.id}">
+                            <input type="number" value="1" name="quantity" min="0" max="100" oninput="validity.valid||(value='');">
+                            <button class="button btn btn-default" type="submit">Add to Cart</button>
                         </form>
                     </td>
                 </tr>
@@ -95,7 +103,7 @@
                     </div>
                 </form>
             </div>
-            <div>
+            <div th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
                 <form th:action="@{/api/chocolates/add_chocolate}" method="get">
                     <input type="hidden" name="page" th:value="${page}">
                     <input type="hidden" name="size" th:value="${size}">
@@ -105,8 +113,8 @@
             </div>
         </th:block>
         <th:block th:unless="${#lists.size(chocolates.content) > 0}">
-            <div>
-                <h2 class="catalog-name">There are no chocolates yet!</h2>
+            <h2 class="catalog-name">There are no chocolates yet!</h2>
+            <div th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
                 <form th:action="@{/api/chocolates/add_chocolate}" method="get">
                     <input type="hidden" name="page" th:value="${page}">
                     <input type="hidden" name="size" th:value="${size}">
@@ -115,7 +123,7 @@
                 </form>
             </div>
         </th:block>
-        <div th:replace="fragments/footer :: footer"></div>
+        <div th:replace="~{fragments/footer :: footer}"></div>
     </div>
 </div>
 </body>

@@ -33,7 +33,7 @@ public class SweetsServiceImpl implements SweetsService {
     @Override
     public Page<SweetsDTO> findAllSweets(String search, Pageable pageable) {
         return (search == null) ?
-                sweetsRepository.findAll(pageable)
+                sweetsRepository.findAllByOrderById(pageable)
                         .map(sweetsMapper::mapToDTO) :
                 sweetsRepository.findAllBySearchAndPage(search, pageable)
                         .map(sweetsMapper::mapToDTO);

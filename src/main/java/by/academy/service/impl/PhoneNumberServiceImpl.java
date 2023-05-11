@@ -33,7 +33,7 @@ public class PhoneNumberServiceImpl implements PhoneNumberService {
     @Override
     public Page<PhoneNumberDTO> findAllPhoneNumbers(String search, Pageable pageable) {
         return (search == null) ?
-                phoneNumberRepository.findAll(pageable)
+                phoneNumberRepository.findAllByOrderById(pageable)
                         .map(phoneNumberMapper::mapToDTO) :
                 phoneNumberRepository.findAllBySearchAndPage(search, pageable)
                         .map(phoneNumberMapper::mapToDTO);

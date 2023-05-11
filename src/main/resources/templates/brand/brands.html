@@ -9,7 +9,7 @@
 </head>
 <body>
 <div class="wrapper">
-    <div th:replace="fragments/header :: header"></div>
+    <div th:replace="~{fragments/header :: header}"></div>
     <div class="catalog-name">
         <h1>Brands</h1>
     </div>
@@ -27,14 +27,14 @@
                 <tr>
                     <th>№</th>
                     <th>Name</th>
-                    <th colspan="2" class="centered">Action</th>
+                    <th th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}" colspan="2" class="centered">Action</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="brand, brandsStat : ${brands.content}">
                     <td th:text="${brandsStat.index + brands.pageable.offset + 1}"></td>
                     <td th:text="${brand.name}"></td>
-                    <td>
+                    <td th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
                         <form th:action="@{/api/brands/edit_brand/{id}(id=${brand.id})}" method="get">
                             <input type="hidden" name="page" th:value="${page}">
                             <input type="hidden" name="size" th:value="${size}">
@@ -42,7 +42,7 @@
                             <button class="button btn btn-default" type="submit">EDIT</button>
                         </form>
                     </td>
-                    <td>
+                    <td th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
                         <form th:action="@{/api/brands/{id}/delete(id=${brand.id})}" method="post">
                             <input type="hidden" name="page" th:value="${brands.number}">
                             <input type="hidden" name="size" th:value="${brands.size}">
@@ -83,7 +83,7 @@
                     </div>
                 </form>
             </div>
-            <div>
+            <div th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
                 <form th:action="@{/api/brands/add_brand}" method="get">
                     <input type="hidden" name="page" th:value="${page}">
                     <input type="hidden" name="size" th:value="${size}">
@@ -93,8 +93,8 @@
             </div>
         </th:block>
         <th:block th:unless="${#lists.size(brands.content) > 0}">
-            <div>
-                <h2 class="catalog-name">There are no brands yet!</h2>
+            <h2 class="catalog-name">There are no brands yet!</h2>
+            <div th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
                 <form th:action="@{/api/brands/add_brand}" method="get">
                     <input type="hidden" name="page" th:value="${page}">
                     <input type="hidden" name="size" th:value="${size}">
@@ -103,7 +103,7 @@
                 </form>
             </div>
         </th:block>
-        <div th:replace="fragments/footer :: footer"></div>
+        <div th:replace="~{fragments/footer :: footer}"></div>
     </div>
 </div>
 </body>

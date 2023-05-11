@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Addresses</title>
@@ -9,7 +10,7 @@
 </head>
 <body>
 <div class="wrapper">
-    <div th:replace="fragments/header :: header"></div>
+    <div th:replace="~{fragments/header :: header}"></div>
     <div class="catalog-name">
         <h1>Addresses</h1>
     </div>
@@ -27,27 +28,27 @@
                 <tr>
                     <th>№</th>
                     <th>Name</th>
-                    <th colspan="2" class="centered">Action</th>
+                    <th th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}" colspan="2" class="centered">Action</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="address, addressStat : ${addresses.content}">
                     <td th:text="${addressStat.index + addresses.pageable.offset + 1}"></td>
                     <td th:text="${address.name}"></td>
-                    <td>
+                    <td th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
                         <form th:action="@{/api/addresses/edit_address/{id}(id=${address.id})}" method="get">
                             <input type="hidden" name="page" th:value="${page}">
                             <input type="hidden" name="size" th:value="${size}">
                             <input type="hidden" name="search" th:value="${search}">
-                            <button class="button btn btn-default" type="submit">EDIT</button>
+                            <button class="button btn btn-default" type="submit" sec:authorize="hasAuthority('ADMIN')">EDIT</button>
                         </form>
                     </td>
-                    <td>
+                    <td th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
                         <form th:action="@{/api/addresses/{id}/delete(id=${address.id})}" method="post">
                             <input type="hidden" name="page" th:value="${addresses.number}">
                             <input type="hidden" name="size" th:value="${addresses.size}">
                             <input type="hidden" name="search" th:value="${search}">
-                            <button class="button btn btn-default" type="submit">DELETE</button>
+                            <button class="button btn btn-default" type="submit" sec:authorize="hasAuthority('ADMIN')">DELETE</button>
                         </form>
                     </td>
                 </tr>
@@ -83,7 +84,7 @@
                     </div>
                 </form>
             </div>
-            <div>
+            <div th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
                 <form th:action="@{/api/addresses/add_address}" method="get">
                     <input type="hidden" name="page" th:value="${page}">
                     <input type="hidden" name="size" th:value="${size}">
@@ -93,8 +94,8 @@
             </div>
         </th:block>
         <th:block th:unless="${#lists.size(addresses.content) > 0}">
-            <div>
-                <h2 class="catalog-name">There are no addresses yet!</h2>
+            <h2 class="catalog-name">There are no addresses yet!</h2>
+            <div th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
                 <form th:action="@{/api/addresses/add_address}" method="get">
                     <input type="hidden" name="page" th:value="${page}">
                     <input type="hidden" name="size" th:value="${size}">
@@ -103,7 +104,7 @@
                 </form>
             </div>
         </th:block>
-        <div th:replace="fragments/footer :: footer"></div>
+        <div th:replace="~{fragments/footer :: footer}"></div>
     </div>
 </div>
 </body>

@@ -10,6 +10,8 @@ import org.springframework.data.repository.query.Param;
 public interface PhoneNumberRepository extends JpaRepository<PhoneNumber, Long> {
 
     @Query("SELECT p FROM PhoneNumber p WHERE " +
-            "LOWER(p.number) LIKE LOWER(CONCAT('%', :search, '%'))")
+            "LOWER(p.number) LIKE LOWER(CONCAT('%', :search, '%'))" +
+            "GROUP BY p.id ORDER BY p.id")
     Page<PhoneNumber> findAllBySearchAndPage(@Param("search") String search, Pageable pageable);
+    Page<PhoneNumber> findAllByOrderById(Pageable pageable);
 }

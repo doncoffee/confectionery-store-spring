@@ -9,7 +9,7 @@
 </head>
 <body>
 <div class="wrapper">
-    <div th:replace="fragments/header :: header"></div>
+    <div th:replace="~{fragments/header :: header}"></div>
     <div class="catalog-name">
         <h1>Contacts</h1>
     </div>
@@ -27,14 +27,14 @@
                 <tr>
                     <th>№</th>
                     <th>Number</th>
-                    <th colspan="2" class="centered">Action</th>
+                    <th th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}" colspan="2" class="centered">Action</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="phoneNumber, phoneNumberStat : ${phoneNumbers.content}">
                     <td th:text="${phoneNumberStat.index + phoneNumbers.pageable.offset + 1}"></td>
                     <td th:text="${phoneNumber.number}"></td>
-                    <td>
+                    <td th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
                         <form th:action="@{/api/phone_numbers/edit_phone_number/{id}(id=${phoneNumber.id})}" method="get">
                             <input type="hidden" name="page" th:value="${page}">
                             <input type="hidden" name="size" th:value="${size}">
@@ -42,7 +42,7 @@
                             <button class="button btn btn-default" type="submit">EDIT</button>
                         </form>
                     </td>
-                    <td>
+                    <td th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
                         <form th:action="@{/api/phone_numbers/{id}/delete(id=${phoneNumber.id})}" method="post">
                             <input type="hidden" name="page" th:value="${phoneNumbers.number}">
                             <input type="hidden" name="size" th:value="${phoneNumbers.size}">
@@ -83,7 +83,7 @@
                     </div>
                 </form>
             </div>
-            <div>
+            <div th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
                 <form th:action="@{/api/phone_numbers/add_phone_number}" method="get">
                     <input type="hidden" name="page" th:value="${page}">
                     <input type="hidden" name="size" th:value="${size}">
@@ -93,8 +93,8 @@
             </div>
         </th:block>
         <th:block th:unless="${#lists.size(phoneNumbers.content) > 0}">
-            <div>
-                <h2 class="catalog-name">There are no contacts yet!</h2>
+            <h2 class="catalog-name">There are no contacts yet!</h2>
+            <div th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
                 <form th:action="@{/api/phone_numbers/add_phone_number}" method="get">
                     <input type="hidden" name="page" th:value="${page}">
                     <input type="hidden" name="size" th:value="${size}">
@@ -103,7 +103,7 @@
                 </form>
             </div>
         </th:block>
-        <div th:replace="fragments/footer :: footer"></div>
+        <div th:replace="~{fragments/footer :: footer}"></div>
     </div>
 </div>
 </body>

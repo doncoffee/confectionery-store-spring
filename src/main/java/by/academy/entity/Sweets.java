@@ -6,17 +6,21 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static by.academy.util.Constants.*;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "sweets")
+@Table(name = SWEETS)
 public class Sweets {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "sweets_id")
+    @Column(name = SWEETS_ID)
     private Long id;
 
     @Column
@@ -29,17 +33,20 @@ public class Sweets {
     private Double weight;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "brand_id")
+    @JoinColumn(name = BRAND_ID)
     private Brand brand;
 
     @Column
     private String composition;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "store_id")
+    @JoinColumn(name = STORE_ID)
     private Store store;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "supplier_id")
+    @JoinColumn(name = SUPPLIER_ID)
     private Supplier supplier;
+
+    @OneToMany(mappedBy = SWEETS, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CartItem> cartItems = new ArrayList<>();
 }

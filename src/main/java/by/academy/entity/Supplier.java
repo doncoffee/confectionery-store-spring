@@ -9,42 +9,43 @@ import lombok.NoArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 
+import static by.academy.util.Constants.*;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "supplier")
+@Table(name = SUPPLIER)
 public class Supplier {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "supplier_id")
+    @Column(name = SUPPLIER_ID)
     private Long id;
 
     @Column
     private String name;
 
-    @Column(name = "contact_person")
+    @Column(name = CONTACT_PERSON)
     private String contactPerson;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "address_id")
+    @JoinColumn(name = ADDRESS_ID)
     private Address address;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "phone_number_id")
+    @JoinColumn(name = PHONE_NUMBER_ID)
     private PhoneNumber phoneNumber;
 
     @Builder.Default
-    @OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = SUPPLIER, cascade = CascadeType.ALL)
     private List<Chocolate> chocolates = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = SUPPLIER, cascade = CascadeType.ALL)
     private List<Cookie> cookies = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = SUPPLIER, cascade = CascadeType.ALL)
     private List<Sweets> sweets = new ArrayList<>();
 }

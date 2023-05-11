@@ -33,7 +33,7 @@ public class StoreServiceImpl implements StoreService {
     @Override
     public Page<StoreDTO> findAllStores(String search, Pageable pageable) {
         return (search == null) ?
-                storeRepository.findAll(pageable)
+                storeRepository.findAllByOrderById(pageable)
                         .map(storeMapper::mapToDTO) :
                 storeRepository.findAllBySearchAndPage(search, pageable)
                         .map(storeMapper::mapToDTO);
