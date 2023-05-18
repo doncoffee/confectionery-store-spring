@@ -24,7 +24,7 @@ import static by.academy.util.Constants.*;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping(USER)
+@RequestMapping(USER_PATH)
 public class UserController {
     private final UserService userService;
 
@@ -58,7 +58,7 @@ public class UserController {
             user = userService.findUserByUsername(oauth2Email);
         }
 
-        model.addAttribute(USER1, user.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)));
-        return USER1;
+        model.addAttribute(USER, user.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)));
+        return USER;
     }
 }

@@ -11,6 +11,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDate;
 
 import static by.academy.util.Constants.*;
+import static by.academy.util.Constants.PASSWORD_MUST_NOT_BE_BLANK;
 
 @Value
 @Builder
@@ -20,7 +21,7 @@ public class UserDTO {
     @Size(min = 3, max = 64, message = USERNAME_SIZE_MUST_BE_BETWEEN_MIN_AND_MAX)
     @UniqueUsername
     String username;
-    @NotBlank
+    @NotBlank(message = PASSWORD_MUST_NOT_BE_BLANK)
     String rawPassword;
     @DateTimeFormat(pattern = YYYY_MM_DD)
     LocalDate birthDate;

@@ -45,8 +45,8 @@ public class Constants {
     public static final String SIZE_PARAMETER_MUST_NOT_BE_NULL = "Size parameter must not be null";
     public static final String ADDRESS_ADD_ADDRESS = "address/add-address";
     public static final String REDIRECT_API_ADDRESSES_PAGE = "redirect:/api/addresses?page=";
-    public static final String SIZE1 = "&size=";
-    public static final String SEARCH1 = "&search=";
+    public static final String SIZE_PATH = "&size=";
+    public static final String SEARCH_PATH = "&search=";
     public static final String ID_UPDATE = "/{id}/update";
     public static final String ID = "id";
     public static final String ADDRESS_EDIT_ADDRESS = "address/edit-address";
@@ -125,11 +125,11 @@ public class Constants {
     public static final String REDIRECT_API_SWEETS_PAGE = "redirect:/api/sweets?page=";
     public static final String SWEETS_SWEETS = "sweets/sweets";
     public static final String API_SWEETS = "/api/sweets";
-    public static final String USER = "/user";
+    public static final String USER_PATH = "/user";
     public static final String REGISTRATION = "/registration";
     public static final String REGISTRATION1 = "registration";
     public static final String CREATE_USER = "/create_user";
-    public static final String USER1 = "user";
+    public static final String USER = "user";
     public static final String ROLES = "roles";
     public static final String MAPPING_FROM_USER_DTO_TO_USER_IS_NOT_SUPPORTED = "Mapping from UserDTO to User is not supported.";
     public static final String NAME_MUST_NOT_BE_BLANK = "Name must not be blank";
@@ -159,6 +159,8 @@ public class Constants {
     public static final String COOKIE_NOT_FOUND = "Cookie not found";
     public static final String SWEETS_NOT_FOUND = "Sweets not found";
     public static final String FAILED_TO_RETRIEVE_USER = "Failed to retrieve user: ";
+    public static final String PASSWORD_MUST_NOT_BE_BLANK = "Password must not be blank";
 
-
+    public static final String GIVEN_NAME = "given_name";
+    public static final String FAMILY_NAME = "family_name";
 }

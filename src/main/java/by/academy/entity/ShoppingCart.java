@@ -1,10 +1,7 @@
 package by.academy.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.*;
 
@@ -24,6 +21,7 @@ public class ShoppingCart {
     @Column(name = SESSION_ID, nullable = false)
     private String sessionId;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = CART, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CartItem> items = new ArrayList<>();
 

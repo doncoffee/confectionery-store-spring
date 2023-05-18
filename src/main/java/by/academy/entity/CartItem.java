@@ -1,10 +1,7 @@
 package by.academy.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import static by.academy.util.Constants.*;
 
@@ -34,6 +31,7 @@ public class CartItem {
     @Column(nullable = false)
     private Integer quantity;
 
+    @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = CART_ID)
     private ShoppingCart cart;

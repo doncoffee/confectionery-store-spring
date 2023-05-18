@@ -1,10 +1,7 @@
 package by.academy.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +29,7 @@ public class Chocolate {
     @Column
     private Double weight;
 
+    @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = BRAND_ID)
     private Brand brand;
@@ -39,14 +37,17 @@ public class Chocolate {
     @Column
     private String composition;
 
+    @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = STORE_ID)
     private Store store;
 
+    @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = SUPPLIER_ID)
     private Supplier supplier;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = CHOCOLATE, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CartItem> cartItems = new ArrayList<>();
 }

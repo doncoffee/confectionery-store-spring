@@ -61,7 +61,7 @@ public class SupplierController {
             return SUPPLIER_ADD_SUPPLIER;
         } else {
             supplierService.createSupplier(supplierDTO);
-            return REDIRECT_API_SUPPLIERS_PAGE + page + SIZE1 + size + SEARCH1 + search;
+            return REDIRECT_API_SUPPLIERS_PAGE + page + SIZE_PATH + size + SEARCH_PATH + search;
         }
     }
 
@@ -88,7 +88,7 @@ public class SupplierController {
             supplierService.updateSupplier(id, supplierDTO)
                     .orElseThrow(() -> new ResponseStatusException(
                             HttpStatus.NOT_FOUND));
-            return REDIRECT_API_SUPPLIERS_PAGE + page + SIZE1 + size + SEARCH1 + search;
+            return REDIRECT_API_SUPPLIERS_PAGE + page + SIZE_PATH + size + SEARCH_PATH + search;
         }
     }
 
