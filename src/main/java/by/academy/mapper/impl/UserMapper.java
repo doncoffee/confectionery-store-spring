@@ -10,8 +10,6 @@ import org.springframework.util.StringUtils;
 
 import java.util.Optional;
 
-import static by.academy.util.Constants.MAPPING_FROM_USER_DTO_TO_USER_IS_NOT_SUPPORTED;
-
 @Component
 @RequiredArgsConstructor
 public class UserMapper implements Mapper<User, UserDTO> {
@@ -46,10 +44,5 @@ public class UserMapper implements Mapper<User, UserDTO> {
                 .birthDate(object.getBirthDate())
                 .role(object.getRole())
                 .build();
-    }
-
-    @Override
-    public User map(UserDTO fromObject, User toObject) {
-        throw new UnsupportedOperationException(MAPPING_FROM_USER_DTO_TO_USER_IS_NOT_SUPPORTED);
     }
 }

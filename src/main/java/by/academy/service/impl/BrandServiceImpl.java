@@ -5,6 +5,7 @@ import by.academy.repository.BrandRepository;
 import by.academy.service.BrandService;
 import by.academy.service.dto.BrandDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -49,8 +50,10 @@ public class BrandServiceImpl implements BrandService {
     @Override
     public Optional<BrandDTO> updateBrand(Long id, BrandDTO brandDTO) {
         return brandRepository.findById(id)
-                .map(entity -> brandMapper.map(brandDTO, entity))
-                .map(brandRepository::save)
+                .map(entity -> {
+                    BeanUtils.copyProperties(brandDTO, entity);
+                    return brandRepository.save(entity);
+                })
                 .map(brandMapper::mapToDTO);
     }
 

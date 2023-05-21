@@ -1,10 +1,17 @@
 package by.academy.service.impl;
 
+import by.academy.entity.Address;
+import by.academy.entity.PhoneNumber;
+import by.academy.entity.Store;
+import by.academy.entity.Supplier;
 import by.academy.mapper.impl.StoreMapper;
+import by.academy.repository.AddressRepository;
+import by.academy.repository.PhoneNumberRepository;
 import by.academy.repository.StoreRepository;
 import by.academy.service.StoreService;
 import by.academy.service.dto.StoreDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -20,11 +27,17 @@ public class StoreServiceImpl implements StoreService {
 
     private final StoreRepository storeRepository;
     private final StoreMapper storeMapper;
+    private final AddressRepository addressRepository;
+    private final PhoneNumberRepository phoneNumberRepository;
 
     @Override
     public StoreDTO createStore(StoreDTO storeDTO) {
         return Optional.of(storeDTO)
-                .map(storeMapper::mapToEntity)
+                .map(dto -> {
+                    Store store = new Store();
+                    copy(dto, store);
+                    return store;
+                })
                 .map(storeRepository::save)
                 .map(storeMapper::mapToDTO)
                 .orElseThrow();
@@ -49,7 +62,7 @@ public class StoreServiceImpl implements StoreService {
     @Override
     public Optional<StoreDTO> updateStore(Long id, StoreDTO storeDTO) {
         return storeRepository.findById(id)
-                .map(entity -> storeMapper.map(storeDTO, entity))
+                .map(entity -> copy(storeDTO, entity))
                 .map(storeRepository::save)
                 .map(storeMapper::mapToDTO);
     }
@@ -68,5 +81,24 @@ public class StoreServiceImpl implements StoreService {
     public Optional<StoreDTO> findStoreById(Long id) {
         return storeRepository.findById(id)
                 .map(storeMapper::mapToDTO);
+    }
+
+    private Address getAddress(Long addressId) {
+        return Optional.ofNullable(addressId)
+                .flatMap(addressRepository::findById)
+                .orElse(null);
+    }
+
+    private PhoneNumber getPhoneNumber(Long phoneNumberId) {
+        return Optional.ofNullable(phoneNumberId)
+                .flatMap(phoneNumberRepository::findById)
+                .orElse(null);
+    }
+
+    private Store copy(StoreDTO storeDTO, Store store) {
+        store.setId(storeDTO.getId());
+        store.setAddress(getAddress(storeDTO.getAddressId()));
+        store.setPhoneNumber(getPhoneNumber(storeDTO.getPhoneNumberId()));
+        return store;
     }
 }

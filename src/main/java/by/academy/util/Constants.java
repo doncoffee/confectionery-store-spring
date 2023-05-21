@@ -160,7 +160,11 @@ public class Constants {
     public static final String SWEETS_NOT_FOUND = "Sweets not found";
     public static final String FAILED_TO_RETRIEVE_USER = "Failed to retrieve user: ";
     public static final String PASSWORD_MUST_NOT_BE_BLANK = "Password must not be blank";
-
     public static final String GIVEN_NAME = "given_name";
     public static final String FAMILY_NAME = "family_name";
+    public static final String USE_COPY_METHOD_IN_CHOCOLATE_SERVICE_IMPL_INSTEAD = "Use 'copy' method in ChocolateServiceImpl instead";
+    public static final String USE_COPY_METHOD_IN_COOKIE_SERVICE_IMPL_INSTEAD = "Use 'copy' method in CookieServiceImpl instead";
+    public static final String USE_COPY_METHOD_IN_STORE_SERVICE_IMPL_INSTEAD = "Use 'copy' method in StoreServiceImpl instead";
+    public static final String USE_COPY_METHOD_IN_SUPPLIER_SERVICE_IMPL_INSTEAD = "Use 'copy' method in SupplierServiceImpl instead";
+    public static final String USE_COPY_METHOD_IN_SWEETS_SERVICE_IMPL_INSTEAD = "Use 'copy' method in SweetsServiceImpl instead";
 }

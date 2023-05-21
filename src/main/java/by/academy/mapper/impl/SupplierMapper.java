@@ -1,32 +1,20 @@
 package by.academy.mapper.impl;
 
-import by.academy.entity.Address;
-import by.academy.entity.PhoneNumber;
 import by.academy.entity.Supplier;
 import by.academy.mapper.Mapper;
-import by.academy.repository.AddressRepository;
-import by.academy.repository.PhoneNumberRepository;
 import by.academy.service.dto.SupplierDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.Optional;
+import static by.academy.util.Constants.USE_COPY_METHOD_IN_SUPPLIER_SERVICE_IMPL_INSTEAD;
 
 @Component
 @RequiredArgsConstructor
 public class SupplierMapper implements Mapper<Supplier, SupplierDTO> {
-    private final AddressRepository addressRepository;
-    private final PhoneNumberRepository phoneNumberRepository;
 
     @Override
     public Supplier mapToEntity(SupplierDTO object) {
-        return Supplier.builder()
-                .id(object.getId())
-                .name(object.getName())
-                .contactPerson(object.getContactPerson())
-                .address(getAddress(object.getAddressId()))
-                .phoneNumber(getPhoneNumber(object.getPhoneNumberId()))
-                .build();
+        throw new UnsupportedOperationException(USE_COPY_METHOD_IN_SUPPLIER_SERVICE_IMPL_INSTEAD);
     }
 
     @Override
@@ -40,30 +28,5 @@ public class SupplierMapper implements Mapper<Supplier, SupplierDTO> {
                 .phoneNumberId(object.getPhoneNumber().getId())
                 .phoneNumberNumber(object.getPhoneNumber().getNumber())
                 .build();
-    }
-
-    @Override
-    public Supplier map(SupplierDTO fromObject, Supplier toObject) {
-        copy(fromObject, toObject);
-        return toObject;
-    }
-
-    private void copy(SupplierDTO supplierDTO, Supplier supplier) {
-        supplier.setName(supplierDTO.getName());
-        supplier.setContactPerson(supplierDTO.getContactPerson());
-        supplier.setAddress(getAddress(supplierDTO.getAddressId()));
-        supplier.setPhoneNumber(getPhoneNumber(supplierDTO.getPhoneNumberId()));
-    }
-
-    private Address getAddress(Long addressId) {
-        return Optional.ofNullable(addressId)
-                .flatMap(addressRepository::findById)
-                .orElse(null);
-    }
-
-    private PhoneNumber getPhoneNumber(Long phoneNumberId) {
-        return Optional.ofNullable(phoneNumberId)
-                .flatMap(phoneNumberRepository::findById)
-                .orElse(null);
     }
 }
