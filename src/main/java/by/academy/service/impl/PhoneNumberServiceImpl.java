@@ -5,6 +5,7 @@ import by.academy.repository.PhoneNumberRepository;
 import by.academy.service.PhoneNumberService;
 import by.academy.service.dto.PhoneNumberDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -50,7 +51,10 @@ public class PhoneNumberServiceImpl implements PhoneNumberService {
     public Optional<PhoneNumberDTO> updatePhoneNumber(Long id,
                                                       PhoneNumberDTO phoneNumberDTO) {
         return phoneNumberRepository.findById(id)
-                .map(entity -> phoneNumberMapper.map(phoneNumberDTO, entity))
+                .map(entity -> {
+                    BeanUtils.copyProperties(phoneNumberDTO, entity);
+                    return phoneNumberRepository.save(entity);
+                })
                 .map(phoneNumberRepository::save)
                 .map(phoneNumberMapper::mapToDTO);
     }

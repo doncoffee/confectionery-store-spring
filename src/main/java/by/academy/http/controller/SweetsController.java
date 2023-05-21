@@ -64,7 +64,7 @@ public class SweetsController {
             return SWEETS_ADD_SWEETS;
         } else {
             sweetsService.createSweets(sweetsDTO);
-            return REDIRECT_API_SWEETS_PAGE + page + SIZE1 + size + SEARCH1 + search;
+            return REDIRECT_API_SWEETS_PAGE + page + SIZE_PATH + size + SEARCH_PATH + search;
         }
     }
 
@@ -92,7 +92,7 @@ public class SweetsController {
             sweetsService.updateSweets(id, sweetsDTO)
                     .orElseThrow(() -> new ResponseStatusException(
                             HttpStatus.NOT_FOUND));
-            return REDIRECT_API_SWEETS_PAGE + page + SIZE1 + size + SEARCH1 + search;
+            return REDIRECT_API_SWEETS_PAGE + page + SIZE_PATH + size + SEARCH_PATH + search;
         }
     }
 

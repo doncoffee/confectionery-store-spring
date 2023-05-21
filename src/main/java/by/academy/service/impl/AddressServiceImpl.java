@@ -5,6 +5,7 @@ import by.academy.repository.AddressRepository;
 import by.academy.service.AddressService;
 import by.academy.service.dto.AddressDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -48,8 +49,10 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public Optional<AddressDTO> updateAddress(Long id, AddressDTO addressDTO) {
         return addressRepository.findById(id)
-                .map(entity -> addressMapper.map(addressDTO, entity))
-                .map(addressRepository::save)
+                .map(entity -> {
+                    BeanUtils.copyProperties(addressDTO, entity);
+                    return addressRepository.save(entity);
+                })
                 .map(addressMapper::mapToDTO);
     }
 

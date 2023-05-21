@@ -22,14 +22,4 @@ public class AddressMapper implements Mapper<Address, AddressDTO> {
                 .name(object.getName())
                 .build();
     }
-
-    @Override
-    public Address map(AddressDTO fromObject, Address toObject) {
-        copy(fromObject, toObject);
-        return toObject;
-    }
-
-    private void copy(AddressDTO addressDTO, Address address) {
-        address.setName(addressDTO.getName());
-    }
 }

@@ -22,14 +22,4 @@ public class BrandMapper implements Mapper<Brand, BrandDTO> {
                 .name(object.getName())
                 .build();
     }
-
-    @Override
-    public Brand map(BrandDTO fromObject, Brand toObject) {
-        copy(fromObject, toObject);
-        return toObject;
-    }
-
-    private void copy(BrandDTO brandDTO, Brand brand) {
-        brand.setName(brandDTO.getName());
-    }
 }

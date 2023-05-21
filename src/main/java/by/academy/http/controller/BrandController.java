@@ -54,7 +54,7 @@ public class BrandController {
             return BRAND_ADD_BRAND;
         } else {
             brandService.createBrand(brandDTO);
-            return REDIRECT_API_BRANDS_PAGE + page + SIZE1 + size + SEARCH1 + search;
+            return REDIRECT_API_BRANDS_PAGE + page + SIZE_PATH + size + SEARCH_PATH + search;
         }
     }
 
@@ -79,7 +79,7 @@ public class BrandController {
             brandService.updateBrand(id, brandDTO)
                     .orElseThrow(() -> new ResponseStatusException(
                             HttpStatus.NOT_FOUND));
-            return REDIRECT_API_BRANDS_PAGE + page + SIZE1 + size + SEARCH1 + search;
+            return REDIRECT_API_BRANDS_PAGE + page + SIZE_PATH + size + SEARCH_PATH + search;
         }
 
     }

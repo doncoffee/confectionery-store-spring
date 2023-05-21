@@ -55,7 +55,7 @@ public class PhoneNumberController {
             return CONTACTS_ADD_PHONE_NUMBER;
         } else {
             phoneNumberService.createPhoneNumber(phoneNumberDTO);
-            return REDIRECT_API_PHONE_NUMBERS_PAGE + page + SIZE1 + size + SEARCH1 + search;
+            return REDIRECT_API_PHONE_NUMBERS_PAGE + page + SIZE_PATH + size + SEARCH_PATH + search;
         }
     }
 
@@ -80,7 +80,7 @@ public class PhoneNumberController {
             phoneNumberService.updatePhoneNumber(id, phoneNumberDTO)
                     .orElseThrow(() -> new ResponseStatusException(
                             HttpStatus.NOT_FOUND));
-            return REDIRECT_API_PHONE_NUMBERS_PAGE + page + SIZE1 + size + SEARCH1 + search;
+            return REDIRECT_API_PHONE_NUMBERS_PAGE + page + SIZE_PATH + size + SEARCH_PATH + search;
         }
     }
 

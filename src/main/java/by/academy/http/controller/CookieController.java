@@ -64,7 +64,7 @@ public class CookieController {
             return COOKIE_ADD_COOKIE;
         } else {
             cookieService.createCookie(cookieDTO);
-            return REDIRECT_API_COOKIES_PAGE + page + SIZE1 + size + SEARCH1 + search;
+            return REDIRECT_API_COOKIES_PAGE + page + SIZE_PATH + size + SEARCH_PATH + search;
         }
     }
 
@@ -91,7 +91,7 @@ public class CookieController {
         } else {
             cookieService.updateCookie(id, cookieDTO)
                     .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-            return REDIRECT_API_COOKIES_PAGE + page + SIZE1 + size + SEARCH1 + search;
+            return REDIRECT_API_COOKIES_PAGE + page + SIZE_PATH + size + SEARCH_PATH + search;
         }
     }
 

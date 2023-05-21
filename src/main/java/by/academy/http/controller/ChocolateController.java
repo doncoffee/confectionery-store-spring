@@ -64,7 +64,7 @@ public class ChocolateController {
             return CHOCOLATE_ADD_CHOCOLATE;
         } else {
             chocolateService.createChocolate(chocolateDTO);
-            return REDIRECT_API_CHOCOLATES_PAGE + page + SIZE1 + size + SEARCH1 + search;
+            return REDIRECT_API_CHOCOLATES_PAGE + page + SIZE_PATH + size + SEARCH_PATH + search;
         }
     }
 
@@ -92,7 +92,7 @@ public class ChocolateController {
             chocolateService.updateChocolate(id, chocolateDTO)
                     .orElseThrow(() -> new ResponseStatusException(
                             HttpStatus.NOT_FOUND));
-            return REDIRECT_API_CHOCOLATES_PAGE + page + SIZE1 + size + SEARCH1 + search;
+            return REDIRECT_API_CHOCOLATES_PAGE + page + SIZE_PATH + size + SEARCH_PATH + search;
         }
     }
 

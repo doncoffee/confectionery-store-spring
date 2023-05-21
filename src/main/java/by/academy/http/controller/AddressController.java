@@ -14,7 +14,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Objects;
 
@@ -55,7 +54,7 @@ public class AddressController {
             return ADDRESS_ADD_ADDRESS;
         } else {
             addressService.createAddress(addressDTO);
-            return REDIRECT_API_ADDRESSES_PAGE + page + SIZE1 + size + SEARCH1 + search;
+            return REDIRECT_API_ADDRESSES_PAGE + page + SIZE_PATH + size + SEARCH_PATH + search;
         }
     }
 
@@ -80,7 +79,7 @@ public class AddressController {
             addressService.updateAddress(id, addressDTO)
                     .orElseThrow(() -> new ResponseStatusException(
                             HttpStatus.NOT_FOUND));
-            return REDIRECT_API_ADDRESSES_PAGE + page + SIZE1 + size + SEARCH1 + search;
+            return REDIRECT_API_ADDRESSES_PAGE + page + SIZE_PATH + size + SEARCH_PATH + search;
         }
     }
 

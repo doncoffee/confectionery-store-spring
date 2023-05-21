@@ -22,14 +22,4 @@ public class PhoneNumberMapper implements Mapper<PhoneNumber, PhoneNumberDTO> {
                 .number(object.getNumber())
                 .build();
     }
-
-    @Override
-    public PhoneNumber map(PhoneNumberDTO fromObject, PhoneNumber toObject) {
-        copy(fromObject, toObject);
-        return toObject;
-    }
-
-    private void copy(PhoneNumberDTO phoneNumberDTO, PhoneNumber phoneNumber) {
-        phoneNumber.setNumber(phoneNumberDTO.getNumber());
-    }
 }

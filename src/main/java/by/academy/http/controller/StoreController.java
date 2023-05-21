@@ -61,7 +61,7 @@ public class StoreController {
             return STORE_ADD_STORE;
         } else {
             storeService.createStore(storeDTO);
-            return REDIRECT_API_STORES_PAGE + page + SIZE1 + size + SEARCH1 + search;
+            return REDIRECT_API_STORES_PAGE + page + SIZE_PATH + size + SEARCH_PATH + search;
         }
     }
 
@@ -88,7 +88,7 @@ public class StoreController {
             storeService.updateStore(id, storeDTO)
                     .orElseThrow(() -> new ResponseStatusException(
                             HttpStatus.NOT_FOUND));
-            return REDIRECT_API_STORES_PAGE + page + SIZE1 + size + SEARCH1 + search;
+            return REDIRECT_API_STORES_PAGE + page + SIZE_PATH + size + SEARCH_PATH + search;
         }
     }
 
