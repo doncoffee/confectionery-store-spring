@@ -19,6 +19,7 @@ import static by.academy.util.Constants.FAILED_TO_RETRIEVE_USER;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserDetailsService, UserService {
+
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 

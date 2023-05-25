@@ -27,15 +27,12 @@ public class Brand {
     @Column
     private String name;
 
-    @Builder.Default
     @OneToMany(mappedBy = BRAND, cascade = CascadeType.ALL)
     private List<Chocolate> chocolates = new ArrayList<>();
 
-    @Builder.Default
     @OneToMany(mappedBy = BRAND, cascade = CascadeType.ALL)
     private List<Cookie> cookies = new ArrayList<>();
 
-    @Builder.Default
     @OneToMany(mappedBy = BRAND, cascade = CascadeType.ALL)
     private List<Sweets> sweets = new ArrayList<>();
 }

@@ -98,7 +98,6 @@ public class SupplierServiceImpl implements SupplierService {
     }
 
     private Supplier copy(SupplierDTO supplierDTO, Supplier supplier) {
-        supplier.setId(supplierDTO.getId());
         supplier.setName(supplierDTO.getName());
         supplier.setContactPerson(supplierDTO.getContactPerson());
         supplier.setAddress(getAddress(supplierDTO.getAddressId()));

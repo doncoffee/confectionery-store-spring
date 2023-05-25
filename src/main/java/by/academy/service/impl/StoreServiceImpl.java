@@ -96,7 +96,6 @@ public class StoreServiceImpl implements StoreService {
     }
 
     private Store copy(StoreDTO storeDTO, Store store) {
-        store.setId(storeDTO.getId());
         store.setAddress(getAddress(storeDTO.getAddressId()));
         store.setPhoneNumber(getPhoneNumber(storeDTO.getPhoneNumberId()));
         return store;

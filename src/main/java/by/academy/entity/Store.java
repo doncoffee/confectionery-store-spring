@@ -31,15 +31,12 @@ public class Store {
     @JoinColumn(name = PHONE_NUMBER_ID)
     private PhoneNumber phoneNumber;
 
-    @Builder.Default
     @OneToMany(mappedBy = STORE, cascade = CascadeType.ALL)
     private List<Chocolate> chocolates = new ArrayList<>();
 
-    @Builder.Default
     @OneToMany(mappedBy = STORE, cascade = CascadeType.ALL)
     private List<Cookie> cookies = new ArrayList<>();
 
-    @Builder.Default
     @OneToMany(mappedBy = STORE, cascade = CascadeType.ALL)
     private List<Sweets> sweets = new ArrayList<>();
 }

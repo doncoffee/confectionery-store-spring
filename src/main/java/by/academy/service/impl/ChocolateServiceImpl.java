@@ -103,7 +103,6 @@ public class ChocolateServiceImpl implements ChocolateService {
     }
 
     private Chocolate copy(ChocolateDTO chocolateDTO, Chocolate chocolate) {
-        chocolate.setId(chocolateDTO.getId());
         chocolate.setPrice(chocolateDTO.getPrice());
         chocolate.setType(chocolateDTO.getType());
         chocolate.setWeight(chocolateDTO.getWeight());
