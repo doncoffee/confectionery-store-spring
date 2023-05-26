@@ -1,14 +1,11 @@
 package by.academy.service.impl;
 
-import by.academy.entity.Address;
 import by.academy.entity.PhoneNumber;
 import by.academy.mapper.impl.PhoneNumberMapper;
 import by.academy.repository.PhoneNumberRepository;
 import by.academy.service.PhoneNumberService;
-import by.academy.service.dto.AddressDTO;
 import by.academy.service.dto.PhoneNumberDTO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;

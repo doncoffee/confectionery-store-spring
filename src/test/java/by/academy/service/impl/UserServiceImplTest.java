@@ -25,10 +25,6 @@ class UserServiceImplTest {
     }
 
     @Test
-    void loadUserByUsername() {
-    }
-
-    @Test
     void createUser() {
         UserDTO result = userService.createUser(createUserDTO());
         assertNotNull(result);

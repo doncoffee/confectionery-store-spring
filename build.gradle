@@ -54,8 +54,7 @@ checkstyle {
 sonar {
     properties {
         property 'sonar.host.url', 'http://localhost:9000'
-        property 'sonar.login', 'admin'
-        property 'sonar.password', '1qaz2wsx'
+        property 'sonar.login', 'squ_e100340dc017a0b4ca9530b29dafdcb10999554d'
     }
 }
 

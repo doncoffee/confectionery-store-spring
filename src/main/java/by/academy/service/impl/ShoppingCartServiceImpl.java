@@ -120,11 +120,14 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public Double countTotalPrice(List<CartItem> items) {
         double totalPrice = 0;
         for (CartItem item : items) {
-            double itemPrice = (item.getChocolate() != null)
-                    ? item.getChocolate().getPrice() * item.getQuantity()
-                    : (item.getCookie() != null)
-                    ? item.getCookie().getPrice() * item.getQuantity()
-                    : item.getSweets().getPrice() * item.getQuantity();
+            double itemPrice;
+            if (item.getChocolate() != null) {
+                itemPrice = item.getChocolate().getPrice() * item.getQuantity();
+            } else if (item.getCookie() != null) {
+                itemPrice = item.getCookie().getPrice() * item.getQuantity();
+            } else {
+                itemPrice = item.getSweets().getPrice() * item.getQuantity();
+            }
             totalPrice += itemPrice;
         }
         return totalPrice;

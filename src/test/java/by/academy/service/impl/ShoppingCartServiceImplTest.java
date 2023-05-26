@@ -51,8 +51,8 @@ class ShoppingCartServiceImplTest {
 
         shoppingCartService.addChocolateToCart(shoppingCart.getId(), createdChocolateDTO.getId(), 3);
 
-        assertEquals(shoppingCart.getItems().size(), 1);
-        assertEquals(shoppingCart.getItems().get(0).getQuantity(), 3);
+        assertEquals(1, shoppingCart.getItems().size());
+        assertEquals(3, shoppingCart.getItems().get(0).getQuantity());
         assertNull(shoppingCart.getItems().get(0).getCookie());
         assertNull(shoppingCart.getItems().get(0).getSweets());
         assertEquals(shoppingCart.getItems().get(0).getChocolate().getPrice(),
@@ -67,8 +67,8 @@ class ShoppingCartServiceImplTest {
 
         shoppingCartService.addCookieToCart(shoppingCart.getId(), createdCookieDTO.getId(), 1);
 
-        assertEquals(shoppingCart.getItems().size(), 1);
-        assertEquals(shoppingCart.getItems().get(0).getQuantity(), 1);
+        assertEquals(1, shoppingCart.getItems().size());
+        assertEquals(1, shoppingCart.getItems().get(0).getQuantity());
         assertNull(shoppingCart.getItems().get(0).getChocolate());
         assertNull(shoppingCart.getItems().get(0).getSweets());
         assertEquals(shoppingCart.getItems().get(0).getCookie().getPrice(),
@@ -83,8 +83,8 @@ class ShoppingCartServiceImplTest {
 
         shoppingCartService.addSweetsToCart(shoppingCart.getId(), createdSweetsDTO.getId(), 5);
 
-        assertEquals(shoppingCart.getItems().size(), 1);
-        assertEquals(shoppingCart.getItems().get(0).getQuantity(), 5);
+        assertEquals(1, shoppingCart.getItems().size());
+        assertEquals(5, shoppingCart.getItems().get(0).getQuantity());
         assertNull(shoppingCart.getItems().get(0).getChocolate());
         assertNull(shoppingCart.getItems().get(0).getCookie());
         assertEquals(shoppingCart.getItems().get(0).getSweets().getPrice(),
@@ -99,11 +99,11 @@ class ShoppingCartServiceImplTest {
 
         shoppingCartService.addCookieToCart(shoppingCart.getId(), createdCookieDTO.getId(), 1);
 
-        assertEquals(shoppingCart.getItems().get(0).getQuantity(), 1);
+        assertEquals(1, shoppingCart.getItems().get(0).getQuantity());
 
         shoppingCartService.updateItemQuantity(shoppingCart.getId(), shoppingCart.getItems().get(0).getId(), 3);
 
-        assertEquals(shoppingCart.getItems().get(0).getQuantity(), 3);
+        assertEquals(3, shoppingCart.getItems().get(0).getQuantity());
     }
 
     @Test
@@ -114,11 +114,11 @@ class ShoppingCartServiceImplTest {
 
         shoppingCartService.addCookieToCart(shoppingCart.getId(), createdCookieDTO.getId(), 1);
 
-        assertEquals(shoppingCart.getItems().size(), 1);
+        assertEquals(1, shoppingCart.getItems().size());
 
         shoppingCartService.removeItemFromCart(shoppingCart.getId(), shoppingCart.getItems().get(0).getId());
 
-        assertEquals(shoppingCart.getItems().size(), 0);
+        assertEquals(0, shoppingCart.getItems().size());
     }
 
     @Test
@@ -132,11 +132,11 @@ class ShoppingCartServiceImplTest {
         shoppingCartService.addCookieToCart(shoppingCart.getId(), createdCookieDTO.getId(), 1);
         shoppingCartService.addSweetsToCart(shoppingCart.getId(), createdSweetsDTO.getId(), 5);
 
-        assertEquals(shoppingCart.getItems().size(), 2);
+        assertEquals(2, shoppingCart.getItems().size());
 
         shoppingCartService.clearCart(shoppingCart.getId());
 
-        assertEquals(shoppingCart.getItems().size(), 0);
+        assertEquals(0, shoppingCart.getItems().size());
     }
 
     @Test
@@ -155,8 +155,8 @@ class ShoppingCartServiceImplTest {
         Double totalPrice = shoppingCartService.countTotalPrice(shoppingCart.getItems());
 
         assertNotNull(totalPrice);
-        assertEquals(totalPrice, createdChocolateDTO.getPrice() +
+        assertEquals( createdChocolateDTO.getPrice() +
                 createdCookieDTO.getPrice() +
-                createdSweetsDTO.getPrice());
+                createdSweetsDTO.getPrice(), totalPrice);
     }
 }

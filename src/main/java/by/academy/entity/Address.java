@@ -24,9 +24,11 @@ public class Address {
     @Column
     private String name;
 
+    @Builder.Default
     @OneToMany(mappedBy = ADDRESS, cascade = CascadeType.ALL)
     private List<Store> stores = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = ADDRESS, cascade = CascadeType.ALL)
     private List<Supplier> suppliers = new ArrayList<>();
 }

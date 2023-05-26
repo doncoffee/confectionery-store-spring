@@ -26,9 +26,11 @@ public class PhoneNumber {
     @Column
     private String number;
 
+    @Builder.Default
     @OneToMany(mappedBy = PHONE_NUMBER1, cascade = CascadeType.ALL)
     private List<Store> stores = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = PHONE_NUMBER1, cascade = CascadeType.ALL)
     private List<Supplier> suppliers = new ArrayList<>();
 }
