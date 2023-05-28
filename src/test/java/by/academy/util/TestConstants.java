@@ -28,4 +28,21 @@ public class TestConstants {
     public static final String FIRSTNAME = "user";
     public static final String LASTNAME = "user";
     public static final String FAKE_USERNAME = "fakeUsername";
+    public static final String TEST_USERNAME = "test";
+    public static final String PASSWORD = "test";
+    public static final String SEARCH_TEST_VALUE = "example";
+    public static final String ADDRESS_DTO = "addressDTO";
+    public static final String TEST_PAGE_VALUE = "0";
+    public static final String TEST_SIZE_VALUE = "10";
+    public static final String PATTERN_PATH = "*";
+    public static final String USER = "USER";
+    public static final String ADMIN = "ADMIN";
+    public static final String BRAND_DTO = "brandDTO";
+    public static final String CHOCOLATE_DTO = "chocolateDTO";
+    public static final String COOKIE_DTO = "cookieDTO";
+    public static final String PHONE_NUMBER_DTO = "phoneNumberDTO";
+    public static final String STORE_DTO = "storeDTO";
+    public static final String SUPPLIER_DTO = "supplierDTO";
+    public static final String SWEETS_DTO = "sweetsDTO";
+
 }
