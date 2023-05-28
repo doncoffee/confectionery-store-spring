@@ -1,4 +1,4 @@
-package by.academy.confectionerystorespring;
+package by.academy;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

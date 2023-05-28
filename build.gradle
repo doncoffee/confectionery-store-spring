@@ -2,7 +2,11 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.0.5'
     id 'io.spring.dependency-management' version '1.1.0'
+    id 'checkstyle'
+    id 'jacoco'
+    id 'org.sonarqube' version '4.0.0.2929'
 }
+apply from: 'version.gradle'
 
 group = 'by.academy'
 version = '0.0.1-SNAPSHOT'
@@ -21,16 +25,46 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.security:spring-security-oauth2-client'
+    implementation 'org.springframework.security:spring-security-oauth2-jose'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
+    implementation 'org.liquibase:liquibase-core'
+    implementation 'org.postgresql:postgresql'
     compileOnly 'org.projectlombok:lombok'
-    runtimeOnly 'org.postgresql:postgresql'
     annotationProcessor 'org.projectlombok:lombok'
+
+    testCompileOnly 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation "org.testcontainers:postgresql:${versions.testcontainers}"
 }
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+checkstyle {
+    toolVersion '10.11.0'
+}
+
+sonar {
+    properties {
+        property 'sonar.host.url', 'http://localhost:9000'
+        property 'sonar.login', 'squ_e100340dc017a0b4ca9530b29dafdcb10999554d'
+    }
+}
+
+test {
+    finalizedBy jacocoTestReport // report is always generated after tests run
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true // used by sonarqube to display test coverage
+    }
+    dependsOn test // tests are required to run before generating the report
 }

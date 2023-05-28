@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit contact</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+<div class="wrapper">
+    <div th:replace="~{fragments/header :: header}"></div>
+    <div class="main">
+        <div class="block">
+            <h2 class="catalog-name">Edit contact</h2>
+            <form th:action="@{/api/phone_numbers/{id}/update(id=${phoneNumber.id})}" method="post">
+                <label for="name" class="input">Number:
+                    <input type="hidden" name="page" th:value="${page}">
+                    <input type="hidden" name="size" th:value="${size}">
+                    <input type="hidden" name="search" th:value="${search}">
+                    <input class="input form-control" id="name" placeholder="Enter number" type="text" name="number"
+                           th:value="${phoneNumber.number}">
+                </label>
+                <button type="submit" class="btn btn-default">UPDATE CONTACT</button>
+                <a class="btn btn-default" href="javascript:history.back()">CANCEL</a>
+            </form>
+            <div th:if="${errors}">
+                <p class="error-message" th:each="error : ${errors}" th:text="${error.defaultMessage}">Error message</p>
+            </div>
+        </div>
+        <div th:replace="~{fragments/footer :: footer}"></div>
+    </div>
+</div>
+</body>
+</html>

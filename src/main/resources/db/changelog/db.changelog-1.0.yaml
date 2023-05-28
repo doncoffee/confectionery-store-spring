@@ -1,0 +1,286 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-address-table-liquibase
+      author: doncoffee
+      changes:
+        - createTable:
+            tableName: address
+            columns:
+              - column:
+                  name: address_id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: create-brand-table-liquibase
+      author: doncoffee
+      changes:
+        - createTable:
+            tableName: brand
+            columns:
+              - column:
+                  name: brand_id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: create-phone_number-table-liquibase
+      author: doncoffee
+      changes:
+        - createTable:
+            tableName: phone_number
+            columns:
+              - column:
+                  name: phone_number_id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: number
+                  type: VARCHAR(255)
+
+  - changeSet:
+      id: create-store-table-liquibase
+      author: doncoffee
+      changes:
+        - createTable:
+            tableName: store
+            columns:
+              - column:
+                  name: store_id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: address_id
+                  type: BIGINT
+                  constraints:
+                    foreignKeyName: fk_store_address
+                    referencedTableName: address
+                    referencedColumnNames: address_id
+              - column:
+                  name: phone_number_id
+                  type: BIGINT
+                  constraints:
+                    foreignKeyName: fk_store_phone_number
+                    referencedTableName: phone_number
+                    referencedColumnNames: phone_number_id
+
+  - changeSet:
+      id: create-supplier-table-liquibase
+      author: doncoffee
+      changes:
+        - createTable:
+            tableName: supplier
+            columns:
+              - column:
+                  name: supplier_id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: contact_person
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: address_id
+                  type: BIGINT
+                  constraints:
+                    foreignKeyName: fk_supplier_address
+                    referencedTableName: address
+                    referencedColumnNames: address_id
+              - column:
+                  name: phone_number_id
+                  type: BIGINT
+                  constraints:
+                    foreignKeyName: fk_supplier_phone_number
+                    referencedTableName: phone_number
+                    referencedColumnNames: phone_number_id
+
+  - changeSet:
+      id: create-chocolate-table-liquibase
+      author: doncoffee
+      changes:
+        - createTable:
+            tableName: chocolate
+            columns:
+              - column:
+                  name: chocolate_id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: composition
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: price
+                  type: DOUBLE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: type
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: weight
+                  type: DOUBLE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: brand_id
+                  type: BIGINT
+                  constraints:
+                    foreignKeyName: fk_chocolate_brand
+                    referencedTableName: brand
+                    referencedColumnNames: brand_id
+              - column:
+                  name: store_id
+                  type: BIGINT
+                  constraints:
+                    foreignKeyName: fk_chocolate_store
+                    referencedTableName: store
+                    referencedColumnNames: store_id
+              - column:
+                  name: supplier_id
+                  type: BIGINT
+                  constraints:
+                    foreignKeyName: fk_chocolate_supplier
+                    referencedTableName: supplier
+                    referencedColumnNames: supplier_id
+
+  - changeSet:
+      id: create-cookie-table-liquibase
+      author: doncoffee
+      changes:
+        - createTable:
+            tableName: cookie
+            columns:
+              - column:
+                  name: cookie_id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: composition
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: price
+                  type: DOUBLE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: type
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: weight
+                  type: DOUBLE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: brand_id
+                  type: BIGINT
+                  constraints:
+                    foreignKeyName: fk_cookie_brand
+                    referencedTableName: brand
+                    referencedColumnNames: brand_id
+              - column:
+                  name: store_id
+                  type: BIGINT
+                  constraints:
+                    foreignKeyName: fk_cookie_store
+                    referencedTableName: store
+                    referencedColumnNames: store_id
+              - column:
+                  name: supplier_id
+                  type: BIGINT
+                  constraints:
+                    foreignKeyName: fk_cookie_supplier
+                    referencedTableName: supplier
+                    referencedColumnNames: supplier_id
+
+  - changeSet:
+      id: create-sweets-table-liquibase
+      author: doncoffee
+      changes:
+        - createTable:
+            tableName: sweets
+            columns:
+              - column:
+                  name: sweets_id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: composition
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: price
+                  type: DOUBLE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: type
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: weight
+                  type: DOUBLE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: brand_id
+                  type: BIGINT
+                  constraints:
+                    foreignKeyName: fk_sweets_brand
+                    referencedTableName: brand
+                    referencedColumnNames: brand_id
+              - column:
+                  name: store_id
+                  type: BIGINT
+                  constraints:
+                    foreignKeyName: fk_sweets_store
+                    referencedTableName: store
+                    referencedColumnNames: store_id
+              - column:
+                  name: supplier_id
+                  type: BIGINT
+                  constraints:
+                    foreignKeyName: fk_sweets_supplier
+                    referencedTableName: supplier
+                    referencedColumnNames: supplier_id

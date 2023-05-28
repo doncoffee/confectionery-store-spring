@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Confectionery store</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+<div class="catalog-name">
+    <h1>Product catalog</h1>
+</div>
+
+<div class="catalog">
+    <a class="item" href="/api/chocolates">
+        <img th:src="@{/img/shocolate.png}" alt="">
+        <span>Chocolate</span>
+    </a>
+    <a class="item" href="/api/cookies">
+        <img th:src="@{/img/cookie.png}" alt="">
+        <span>Cookies</span>
+    </a>
+    <a class="item" href="/api/sweets">
+        <img th:src="@{/img/candies.png}" alt="">
+        <span>Sweets</span>
+    </a>
+</div>
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>
