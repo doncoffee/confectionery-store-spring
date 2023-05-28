@@ -21,6 +21,7 @@ public class ShoppingCart {
     @Column(name = SESSION_ID, nullable = false)
     private String sessionId;
 
+    @Builder.Default
     @ToString.Exclude
     @OneToMany(mappedBy = CART, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CartItem> items = new ArrayList<>();

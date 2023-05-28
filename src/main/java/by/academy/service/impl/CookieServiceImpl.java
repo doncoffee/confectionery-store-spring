@@ -103,7 +103,6 @@ public class CookieServiceImpl implements CookieService {
     }
 
     private Cookie copy(CookieDTO cookieDTO, Cookie cookie) {
-        cookie.setId(cookieDTO.getId());
         cookie.setPrice(cookieDTO.getPrice());
         cookie.setType(cookieDTO.getType());
         cookie.setWeight(cookieDTO.getWeight());

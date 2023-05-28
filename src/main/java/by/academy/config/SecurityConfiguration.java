@@ -34,7 +34,7 @@ public class SecurityConfiguration {
                 .logout(logout -> logout
                         .logoutUrl(LOGOUT)
                         .logoutSuccessUrl(LOGIN))
-                .sessionManagement((session) -> session
+                .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                         .invalidSessionUrl(LOGIN));
         return http.build();

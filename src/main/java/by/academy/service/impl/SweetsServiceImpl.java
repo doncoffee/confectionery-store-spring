@@ -103,7 +103,6 @@ public class SweetsServiceImpl implements SweetsService {
     }
 
     private Sweets copy(SweetsDTO sweetsDTO, Sweets sweets) {
-        sweets.setId(sweetsDTO.getId());
         sweets.setPrice(sweetsDTO.getPrice());
         sweets.setType(sweetsDTO.getType());
         sweets.setWeight(sweetsDTO.getWeight());

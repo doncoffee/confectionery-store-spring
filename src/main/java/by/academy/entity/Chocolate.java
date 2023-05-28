@@ -47,6 +47,7 @@ public class Chocolate {
     @JoinColumn(name = SUPPLIER_ID)
     private Supplier supplier;
 
+    @Builder.Default
     @ToString.Exclude
     @OneToMany(mappedBy = CHOCOLATE, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CartItem> cartItems = new ArrayList<>();

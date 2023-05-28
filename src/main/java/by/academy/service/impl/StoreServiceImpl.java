@@ -3,7 +3,6 @@ package by.academy.service.impl;
 import by.academy.entity.Address;
 import by.academy.entity.PhoneNumber;
 import by.academy.entity.Store;
-import by.academy.entity.Supplier;
 import by.academy.mapper.impl.StoreMapper;
 import by.academy.repository.AddressRepository;
 import by.academy.repository.PhoneNumberRepository;
@@ -11,7 +10,6 @@ import by.academy.repository.StoreRepository;
 import by.academy.service.StoreService;
 import by.academy.service.dto.StoreDTO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -96,7 +94,6 @@ public class StoreServiceImpl implements StoreService {
     }
 
     private Store copy(StoreDTO storeDTO, Store store) {
-        store.setId(storeDTO.getId());
         store.setAddress(getAddress(storeDTO.getAddressId()));
         store.setPhoneNumber(getPhoneNumber(storeDTO.getPhoneNumberId()));
         return store;

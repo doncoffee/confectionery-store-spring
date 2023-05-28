@@ -1,11 +1,11 @@
 package by.academy.service.impl;
 
+import by.academy.entity.Brand;
 import by.academy.mapper.impl.BrandMapper;
 import by.academy.repository.BrandRepository;
 import by.academy.service.BrandService;
 import by.academy.service.dto.BrandDTO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -50,10 +50,8 @@ public class BrandServiceImpl implements BrandService {
     @Override
     public Optional<BrandDTO> updateBrand(Long id, BrandDTO brandDTO) {
         return brandRepository.findById(id)
-                .map(entity -> {
-                    BeanUtils.copyProperties(brandDTO, entity);
-                    return brandRepository.save(entity);
-                })
+                .map(entity -> copy(brandDTO, entity))
+                .map(brandRepository::save)
                 .map(brandMapper::mapToDTO);
     }
 
@@ -71,5 +69,10 @@ public class BrandServiceImpl implements BrandService {
     public Optional<BrandDTO> findBrandById(Long id) {
         return brandRepository.findById(id)
                 .map(brandMapper::mapToDTO);
+    }
+
+    private Brand copy(BrandDTO brandDTO, Brand brand) {
+        brand.setName(brandDTO.getName());
+        return brand;
     }
 }

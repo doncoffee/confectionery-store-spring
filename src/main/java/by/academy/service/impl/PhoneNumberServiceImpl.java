@@ -1,11 +1,11 @@
 package by.academy.service.impl;
 
+import by.academy.entity.PhoneNumber;
 import by.academy.mapper.impl.PhoneNumberMapper;
 import by.academy.repository.PhoneNumberRepository;
 import by.academy.service.PhoneNumberService;
 import by.academy.service.dto.PhoneNumberDTO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -51,10 +51,7 @@ public class PhoneNumberServiceImpl implements PhoneNumberService {
     public Optional<PhoneNumberDTO> updatePhoneNumber(Long id,
                                                       PhoneNumberDTO phoneNumberDTO) {
         return phoneNumberRepository.findById(id)
-                .map(entity -> {
-                    BeanUtils.copyProperties(phoneNumberDTO, entity);
-                    return phoneNumberRepository.save(entity);
-                })
+                .map(entity -> copy(phoneNumberDTO, entity))
                 .map(phoneNumberRepository::save)
                 .map(phoneNumberMapper::mapToDTO);
     }
@@ -73,5 +70,10 @@ public class PhoneNumberServiceImpl implements PhoneNumberService {
     public Optional<PhoneNumberDTO> findPhoneNumberById(Long id) {
         return phoneNumberRepository.findById(id)
                 .map(phoneNumberMapper::mapToDTO);
+    }
+
+    private PhoneNumber copy(PhoneNumberDTO phoneNumberDTO, PhoneNumber phoneNumber) {
+        phoneNumber.setNumber(phoneNumberDTO.getNumber());
+        return phoneNumber;
     }
 }
